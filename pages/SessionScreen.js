@@ -1,10 +1,14 @@
 import React from "react";
-import { View, Text, Button, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
+import { View, Text, Button, TouchableOpacity, SafeAreaView, StyleSheet, Alert } from "react-native";
 import Colors from "./assets/Colors";
 import ItemsCounter from "./components/ItemsCounter";
+import Realm from 'realm';
 
 import MyButton from './components/MyButton';
 import MyText from './components/MyText';
+import { sessionSchema, itemSchema } from "./realmSchemas";
+
+let realm;
 
 
 class SessionScreen extends React.Component {
@@ -27,6 +31,40 @@ class SessionScreen extends React.Component {
             itemCounts: itemCounts,
             sessionId: 0
         }
+
+        realm = new Realm({
+            path: 'GeoTrasherData.realm',
+            schema: [
+                itemSchema,
+                sessionSchema
+            ]
+        });
+    }
+
+    createSessionInRealm = async () => {
+        // Create session add to realm
+        let id = 0;
+        const length = realm.objects('session_details').length
+        if (length) {
+            console.log("Got length", length);
+            const realmObjs = realm.objects('session_details');
+            console.log("realmObjs", realmObjs);
+            id = await realm.objects('session_details').sorted('session_id', true)[0].session_id + 1
+        }
+
+        this.setState({ sessionId: id });
+        realm.write(() => {
+            realm.create('session_details', {
+                session_id: id,
+                session_name: `Session ${id}`
+            });
+        });
+        Alert.alert('Success', `New session with id: ${this.state.sessionId}`, [
+            {
+                text: 'Ok',
+            }
+        ],
+            { cancelable: true });
     }
 
     componentDidMount() {
@@ -41,7 +79,7 @@ class SessionScreen extends React.Component {
         //     console.log(`Action: ${keyEvent.action}`);
         //     console.log(`Key: ${keyEvent.pressedKey}`);
         // });
-        // this.createSessionInRealm();
+        this.createSessionInRealm();
     }
 
     componentWillUnmount() {
