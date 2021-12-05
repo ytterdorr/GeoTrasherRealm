@@ -2,13 +2,8 @@ import React from "react";
 import { View, Text, Button, TouchableOpacity, SafeAreaView, StyleSheet, Alert } from "react-native";
 import Colors from "./assets/Colors";
 import ItemsCounter from "./components/ItemsCounter";
-import Realm from 'realm';
 
-import MyButton from './components/MyButton';
-import MyText from './components/MyText';
-import { sessionSchema, itemSchema } from "./realmSchemas";
-
-let realm;
+import realm, { getAllSessions, addItemToSession } from "./realmSchemas";
 
 
 class SessionScreen extends React.Component {
@@ -31,14 +26,6 @@ class SessionScreen extends React.Component {
             itemCounts: itemCounts,
             sessionId: 0
         }
-
-        realm = new Realm({
-            path: 'GeoTrasherData.realm',
-            schema: [
-                itemSchema,
-                sessionSchema
-            ]
-        });
     }
 
     createSessionInRealm = async () => {
@@ -56,7 +43,8 @@ class SessionScreen extends React.Component {
         realm.write(() => {
             realm.create('session_details', {
                 session_id: id,
-                session_name: `Session ${id}`
+                session_name: `Session ${id}`,
+                itemCount: 0
             });
         });
         Alert.alert('Success', `New session with id: ${this.state.sessionId}`, [
@@ -104,6 +92,8 @@ class SessionScreen extends React.Component {
         itemCounts[selectedItem] += 1;
         console.log("ItemCounts in updateItemCount: ", itemCounts)
         this.setState({ itemCounts: itemCounts })
+        addItemToSession(this.state.sessionId, { name: selectedItem });
+
     }
 
     onTimeOut = () => {
@@ -116,13 +106,14 @@ class SessionScreen extends React.Component {
             count: this.state.count + 1,
             multiClickCount: 0
         });
+        // update database
 
 
     }
 
 
 
-    onPress = (event) => {
+    onPress = () => {
         console.log("timerRunning?", this.state.timerRunning);
         if (this.state.timerRunning) {
             clearTimeout(this.state.multiClickTimer);
@@ -165,8 +156,14 @@ class SessionScreen extends React.Component {
                             Count some pushes
                         </Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={{ ...styles.button, marginTop: 10 }} onpress={() => console.log("Pressed")}>
+                        <Text style={styles.buttonText}>
+                            Save data
+                        </Text>
+                    </TouchableOpacity>
+
                 </View>
-            </SafeAreaView>
+            </SafeAreaView >
         )
     }
 }
