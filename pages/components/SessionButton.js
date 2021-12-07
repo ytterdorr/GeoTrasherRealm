@@ -39,6 +39,12 @@ const SessionButton = ({ session, deleteSessionPrompt }) => {
                     )
 
                     )}
+                    {/* Sum object */}
+                    {session.itemSum ? Object.entries(session.itemSum).map(([key, value], index) => {
+                        return <Text key={`${session.session_id}_${key}_key`}>{`${key}: ${value}`}</Text>
+                    })
+                        : <Text>No sum object</Text>
+                    }
                 </View>
             )
                 : null

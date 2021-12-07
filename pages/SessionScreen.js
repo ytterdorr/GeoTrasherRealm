@@ -3,7 +3,7 @@ import { View, Text, Button, TouchableOpacity, SafeAreaView, StyleSheet, Alert }
 import Colors from "./assets/Colors";
 import ItemsCounter from "./components/ItemsCounter";
 
-import realm, { getAllSessions, addItemToSession } from "./realmSchemas";
+import realm, { addItemToSession, updateItemSumsById } from "./realmSchemas";
 
 
 class SessionScreen extends React.Component {
@@ -47,6 +47,8 @@ class SessionScreen extends React.Component {
                 itemCount: 0
             });
         });
+
+        // Show the user that session is created
         Alert.alert('Success', `New session with id: ${this.state.sessionId}`, [
             {
                 text: 'Ok',
@@ -81,7 +83,7 @@ class SessionScreen extends React.Component {
         //    KeyEvent.removeKeyMultipleListener();
     }
 
-    updateItemCount = (multiClickCount) => {
+    updateItemCount = async (multiClickCount) => {
         if (multiClickCount > this.state.items.length) {
             multiClickCount = this.state.items.length
         }
@@ -92,7 +94,10 @@ class SessionScreen extends React.Component {
         itemCounts[selectedItem] += 1;
         console.log("ItemCounts in updateItemCount: ", itemCounts)
         this.setState({ itemCounts: itemCounts })
-        addItemToSession(this.state.sessionId, { name: selectedItem });
+
+        // Store item in database
+        await addItemToSession(this.state.sessionId, { name: selectedItem });
+        await updateItemSumsById(this.state.sessionId, this.state.itemCounts)
 
     }
 
