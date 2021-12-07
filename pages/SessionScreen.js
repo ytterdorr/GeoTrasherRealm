@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Button, TouchableOpacity, SafeAreaView, StyleSheet, Alert } from "react-native";
 import Colors from "./assets/Colors";
 import ItemsCounter from "./components/ItemsCounter";
+import KeyEvent from 'react-native-keyevent';
 
 import realm, { addItemToSession, updateItemSumsById } from "./realmSchemas";
 
@@ -58,29 +59,29 @@ class SessionScreen extends React.Component {
     }
 
     componentDidMount() {
-        // KeyEvent.onKeyUpListener((keyEvent) => {
-        //     console.log(`onKeyUp keyCode: ${keyEvent.keyCode}`)
-        //     console.log("KeyUpTimerRunning?", this.state.timerRunning)
-        //     this.onPress()
-        // })
+        KeyEvent.onKeyUpListener((keyEvent) => {
+            console.log(`onKeyUp keyCode: ${keyEvent.keyCode}`)
+            console.log("KeyUpTimerRunning?", this.state.timerRunning)
+            this.onPress()
+        })
 
-        // KeyEvent.onKeyDownListener((keyEvent) => {
-        //     console.log(`onKeyDown keyCode: ${keyEvent.keyCode}`);
-        //     console.log(`Action: ${keyEvent.action}`);
-        //     console.log(`Key: ${keyEvent.pressedKey}`);
-        // });
+        KeyEvent.onKeyDownListener((keyEvent) => {
+            console.log(`onKeyDown keyCode: ${keyEvent.keyCode}`);
+            console.log(`Action: ${keyEvent.action}`);
+            console.log(`Key: ${keyEvent.pressedKey}`);
+        });
         this.createSessionInRealm();
     }
 
     componentWillUnmount() {
         // if you are listening to keyDown
-        // KeyEvent.removeKeyDownListener();
+        KeyEvent.removeKeyDownListener();
 
         // if you are listening to keyUp
-        // KeyEvent.removeKeyUpListener();
+        KeyEvent.removeKeyUpListener();
 
-        //     // if you are listening to keyMultiple
-        //    KeyEvent.removeKeyMultipleListener();
+        // if you are listening to keyMultiple
+        // KeyEvent.removeKeyMultipleListener();
     }
 
     updateItemCount = async (multiClickCount) => {
@@ -111,7 +112,6 @@ class SessionScreen extends React.Component {
             count: this.state.count + 1,
             multiClickCount: 0
         });
-        // update database
 
 
     }
