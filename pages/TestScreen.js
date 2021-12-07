@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { View, Text, TouchableOpacity, Alert, Modal } from 'react-native';
-import realm, { getAllSessions, deleteSessionById } from './realmSchemas';
+import React, { useState } from 'react';
+import { View, Text, Alert } from 'react-native';
+import { getAllSessions, deleteSessionById } from './realmSchemas';
 import SessionButton from './components/SessionButton';
 
 const TestScreen = () => {
