@@ -6072,6 +6072,11 @@
   "resolved" "https://registry.npmjs.org/react-native-keyevent/-/react-native-keyevent-0.2.8.tgz"
   "version" "0.2.8"
 
+"react-native-location@^2.5.0":
+  "integrity" "sha512-myT54tZuFmN6d5RruMVfoa8eY+voJWkSd73xUVhjzJDnQr5uu5MFoH7hMg3trHF1CAkaY/2gIneOspUdGxv59Q=="
+  "resolved" "https://registry.npmjs.org/react-native-location/-/react-native-location-2.5.0.tgz"
+  "version" "2.5.0"
+
 "react-native-reanimated@^2.2.4":
   "integrity" "sha512-Nn648MfEEnTCEiWsl1YmfkojiLyV0NMY0EiRdDRbZNfJVfxBuyqhCxI/4Jd7aBi162qpgf8XK2mByYgvF4zLrQ=="
   "resolved" "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-2.2.4.tgz"
@@ -6102,7 +6107,7 @@
     "react-freeze" "^1.0.0"
     "warn-once" "^0.1.0"
 
-"react-native@*", "react-native@>=0.30", "react-native@>=0.42.0", "react-native@>=0.57", "react-native@>=0.60", "react-native@0.66.3":
+"react-native@*", "react-native@>= 0.46", "react-native@>=0.30", "react-native@>=0.42.0", "react-native@>=0.57", "react-native@>=0.60", "react-native@0.66.3":
   "integrity" "sha512-B/dQpuvta9YvF5MihDWefoGlTvxzUHK5X5RjdrXHAu/ihTehJXxEA+m6z/tufp1ZUMDjU+tMZK6gnehzCuYfzw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.66.3.tgz"
   "version" "0.66.3"

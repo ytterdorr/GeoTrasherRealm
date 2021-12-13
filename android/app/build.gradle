@@ -216,6 +216,11 @@ dependencies {
         implementation jscFlavor
     }
 
+    // For geolocation
+    implementation "com.google.android.gms:play-services-base:16.0.1"
+
+    implementation "com.google.android.gms:play-services-location:16.0.0"
+
     // For keyevent
     compile project(':react-native-keyevent')
 }

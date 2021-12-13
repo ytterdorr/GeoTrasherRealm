@@ -3,6 +3,11 @@ import { View, Text, Button, TouchableOpacity, SafeAreaView, StyleSheet, Alert }
 import Colors from "./assets/Colors";
 import ItemsCounter from "./components/ItemsCounter";
 import KeyEvent from 'react-native-keyevent';
+import RNLocation from 'react-native-location';
+
+RNLocation.configure({
+    distanceFilter: 0.1
+})
 
 import realm, { addItemToSession, updateItemSumsById } from "./realmSchemas";
 
@@ -10,6 +15,9 @@ import realm, { addItemToSession, updateItemSumsById } from "./realmSchemas";
 class SessionScreen extends React.Component {
     constructor(props) {
         super(props);
+
+        // Get geolocation permission
+        this.permissionHandle()
 
         let items = ["nicotine", "plastic", "other"]
         let itemCounts = {}
@@ -25,7 +33,8 @@ class SessionScreen extends React.Component {
             keyCode: null,
             items: items,
             itemCounts: itemCounts,
-            sessionId: 0
+            sessionId: 0,
+            location: { latitude: "", longitude: "" }
         }
     }
 
@@ -91,13 +100,19 @@ class SessionScreen extends React.Component {
 
         let index = multiClickCount - 1;
         let selectedItem = this.state.items[index];
+
+        // Update itemcounts
         let itemCounts = this.state.itemCounts;
         itemCounts[selectedItem] += 1;
         console.log("ItemCounts in updateItemCount: ", itemCounts)
         this.setState({ itemCounts: itemCounts })
 
+        // Get geolocation and timestamp
+        let location = await this.getGeoLocation()
+        if (!location) { location = {} }
+
         // Store item in database
-        await addItemToSession(this.state.sessionId, { name: selectedItem });
+        await addItemToSession(this.state.sessionId, { name: selectedItem, location: location });
         await updateItemSumsById(this.state.sessionId, this.state.itemCounts)
 
     }
@@ -113,6 +128,68 @@ class SessionScreen extends React.Component {
             multiClickCount: 0
         });
 
+
+    }
+
+    permissionHandle = async () => {
+        console.log("Get permission");
+
+        let permission = await RNLocation.checkPermission({
+            ios: 'whenInUse',
+            android: {
+                detail: 'fine',
+                rationale: {
+                    title: "We need access to your location",
+                    message: "To track where you pick trash",
+                    buttonPositive: "OK",
+                    buttonNegative: "Cancel"
+
+                }
+            }
+        })
+        console.log("after first permission check")
+        console.log(permission)
+
+        if (!permission) {
+            permission = await RNLocation.requestPermission({
+                ios: 'whenInUse',
+                android: {
+                    detail: 'fine',
+                    rationale: {
+                        title: "We need access to your location",
+                        message: "To track where you pick trash",
+                        buttonPositive: "OK",
+                        buttonNegative: "Cancel"
+
+                    }
+                }
+            }).catch(err => console.log("Didn't get geolocation access", err))
+        }
+        console.log("after ask permission");
+        console.log(permission)
+        return permission;
+
+    }
+
+    getGeoLocation = async () => {
+
+        const permission = this.permissionHandle();
+
+        if (permission) {
+            const location = await RNLocation.getLatestLocation({ timeout: 100 })
+
+            console.log(location)
+            if (location) {
+                return location
+            }
+            else {
+                console.log("failed to get location")
+                return null
+            }
+        } else {
+            console.log("Does not have permission for geolocation");
+            return null;
+        }
 
     }
 
@@ -161,11 +238,14 @@ class SessionScreen extends React.Component {
                             Count some pushes
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ ...styles.button, marginTop: 10 }} onpress={() => console.log("Pressed")}>
+                    <TouchableOpacity style={{ ...styles.button, marginTop: 10 }} onPress={this.getGeoLocation}>
                         <Text style={styles.buttonText}>
-                            Save data
+                            Get Geolocation
                         </Text>
+
                     </TouchableOpacity>
+                    <Text>Latitude: {this.state.location.latitude}</Text>
+                    <Text>Longitude: {this.state.location.longitude}</Text>
 
                 </View>
             </SafeAreaView >

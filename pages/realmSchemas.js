@@ -5,7 +5,8 @@ const dbPath = 'GeoTrasherData.realm';
 itemSchema = {
     name: 'item_details',
     properties: {
-        name: 'string'
+        name: 'string',
+        location: '{}?'
     }
 }
 
@@ -23,7 +24,7 @@ sessionSchema = {
 let realm = new Realm({
     path: 'GeoTrasherData.realm',
     schema: [sessionSchema, itemSchema],
-    schemaVersion: 3
+    schemaVersion: 4
 });
 
 const getAllSessions = () => {
