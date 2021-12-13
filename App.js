@@ -9,6 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './pages/HomeScreen';
 import SessionScreen from './pages/SessionScreen';
 import TestScreen from './pages/TestScreen';
+import SessionDataScreen from './pages/SessionDataScreen';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,12 @@ function App() {
                     name="SessionScreen"
                     component={SessionScreen}
                     options={{ title: "Session" }} />
+
+                <Stack.Screen
+                    name="SessionDataScreen"
+                    component={SessionDataScreen}
+                    options={{ title: 'Session Data' }}
+                />
 
                 <Stack.Screen
                     name="TestScreen"

@@ -5,7 +5,7 @@ import ItemsCounter from "./components/ItemsCounter";
 import KeyEvent from 'react-native-keyevent';
 
 import realm, { addItemToSession, updateItemSumsById } from "./realmSchemas";
-
+import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "./assets/utitities";
 
 class SessionScreen extends React.Component {
     constructor(props) {
@@ -18,6 +18,7 @@ class SessionScreen extends React.Component {
         }
 
         this.state = {
+            hasLocationPermission: null,
             multiClickTimer: null,
             timerRunning: false,
             count: 0,
@@ -58,7 +59,30 @@ class SessionScreen extends React.Component {
             { cancelable: true });
     }
 
+    initializeLocationPermission = async () => {
+        // Check location permission
+        try {
+            let locationPermission = await checkLocationPermission();
+            console.log("locationPermission1", locationPermission)
+            if (!locationPermission) {
+                try {
+                    locationPermission = await requestLocationPermission();
+                } catch (err) {
+                    console.warn(err)
+                }
+            }
+            console.log("locationPermission2", locationPermission)
+            this.setState({ hasLocationPermission: locationPermission })
+            console.log("state.hasLocationPermission", this.state.hasLocationPermission)
+        } catch (err) {
+            console.warn(`Failed to get location permission, ${err}`)
+        }
+
+    }
     componentDidMount() {
+
+        this.initializeLocationPermission();
+
         KeyEvent.onKeyUpListener((keyEvent) => {
             console.log(`onKeyUp keyCode: ${keyEvent.keyCode}`)
             console.log("KeyUpTimerRunning?", this.state.timerRunning)
@@ -84,27 +108,75 @@ class SessionScreen extends React.Component {
         // KeyEvent.removeKeyMultipleListener();
     }
 
-    updateItemCount = async (multiClickCount) => {
+    // Need to do function chaining because of silly Geolocation package?
+
+    storeNewItem = async ({ name }) => {
+        if (!this.state.hasLocationPermission) {
+            try {
+                const permission = await requestLocationPermission()
+                if (!permission) {
+                    // Don't continue without permission
+                    return
+                }
+            } catch (err) {
+                console.warn(err)
+            }
+        }
+
+        // this function is supposed to chain with Geolocation.getCurrentPosition
+        // Which on success expects a function that takes position as argument. 
+        const storeItemWithPosition = async (position) => {
+
+            const location = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                timestamp: position.timestamp
+            }
+            // Store item in database
+            await addItemToSession(this.state.sessionId, { name: name, location: location });
+            await updateItemSumsById(this.state.sessionId, this.state.itemCounts)
+        }
+        getCurrentPosition(this.state.hasLocationPermission, storeItemWithPosition)
+
+    }
+
+    getItemNameFromMultiClick = () => {
+        let multiClickCount = this.state.multiClickCount;
+
         if (multiClickCount > this.state.items.length) {
             multiClickCount = this.state.items.length
         }
 
         let index = multiClickCount - 1;
         let selectedItem = this.state.items[index];
+        return selectedItem
+    }
+
+
+
+    updateItemCount = async () => {
+        // const multiClickCount = this.state.multiClickCount
+
+        // if (multiClickCount > this.state.items.length) {
+        //     multiClickCount = this.state.items.length
+        // }
+
+        // let index = multiClickCount - 1;
+        // let selectedItem = this.state.items[index];
+        const selectedItem = this.getItemNameFromMultiClick();
         let itemCounts = this.state.itemCounts;
         itemCounts[selectedItem] += 1;
         console.log("ItemCounts in updateItemCount: ", itemCounts)
         this.setState({ itemCounts: itemCounts })
 
-        // Store item in database
-        await addItemToSession(this.state.sessionId, { name: selectedItem });
-        await updateItemSumsById(this.state.sessionId, this.state.itemCounts)
+
 
     }
 
     onTimeOut = () => {
         console.log("Time's up")
         console.log("timer: " + this.state.multiClickTimer);
+        const name = this.getItemNameFromMultiClick()
         this.updateItemCount(this.state.multiClickCount)
         // Reset counters
         this.setState({
@@ -112,6 +184,7 @@ class SessionScreen extends React.Component {
             count: this.state.count + 1,
             multiClickCount: 0
         });
+        this.storeNewItem({ name });
 
 
     }
@@ -131,6 +204,11 @@ class SessionScreen extends React.Component {
             timerRunning: true
         })
         console.log("Pressed Button")
+    }
+
+    checkLocationIsRight = () => {
+        console.log("state has permission?", this.state.hasLocationPermission)
+        checkLocationPermission();
     }
 
     render() {
@@ -164,6 +242,11 @@ class SessionScreen extends React.Component {
                     <TouchableOpacity style={{ ...styles.button, marginTop: 10 }} onpress={() => console.log("Pressed")}>
                         <Text style={styles.buttonText}>
                             Save data
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ ...styles.button, marginTop: 10 }} onPress={this.checkLocationIsRight}>
+                        <Text style={styles.buttonText}>
+                            check location permission
                         </Text>
                     </TouchableOpacity>
 

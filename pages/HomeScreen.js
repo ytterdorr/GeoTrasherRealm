@@ -26,6 +26,10 @@ const HomeScreen = ({ navigation }) => {
                 customClick={() => navigation.navigate('SessionScreen')}
             />
             <MyButton
+                title="Session Data"
+                customClick={() => navigation.navigate('SessionDataScreen')}
+            />
+            <MyButton
                 title="test screen"
                 customClick={() => navigation.navigate('TestScreen')}
             />

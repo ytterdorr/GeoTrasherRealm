@@ -35,7 +35,16 @@ const SessionButton = ({ session, deleteSessionPrompt }) => {
             {showDetails ? (
                 <View>
                     {session.items.map((item, index) => (
-                        <Text key={`${item.name}${index}`}>{item.name}</Text>
+                        <View>
+                            <Text key={`${item.name}${index}`}>{item.name}</Text>
+                            {item.location
+                                ? <View>
+                                    <Text>{`latitude: ${item.location.latitude}`}</Text>
+                                    <Text>{`longitude: ${item.location.longitude}`}</Text>
+                                    <Text>{`timestamp: ${new Date(item.location.timestamp).toString()}`}</Text>
+                                </View>
+                                : null}
+                        </View>
                     )
 
                     )}
