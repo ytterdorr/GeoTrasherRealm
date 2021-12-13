@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { deleteSessionById } from '../realmSchemas';
 
 const styles = StyleSheet.create({
     sessionButton: {
@@ -33,19 +34,13 @@ const SessionButton = ({ session, deleteSessionPrompt }) => {
             </TouchableOpacity>
             {showDetails ? (
                 <View>
-                    {/* Item details */}
-                    {session.items.map((item, index) => (<View>
+                    {session.items.map((item, index) => (
                         <Text key={`${item.name}${index}`}>{item.name}</Text>
-
-                        <Text key={`${item.name}${index}_latitude`}>{item.location.latitude ? item.location.latitude : null}</Text>
-                        <Text key={`${item.name}${index}_longitude`}>{item.location.longitude ? item.location.longitude : null}</Text>
-                        <Text key={`${item.name}${index}_time`}>{item.location.timestamp ? new Date(item.location.timestamp).toString() : null}</Text>
-                    </View>
                     )
 
                     )}
                     {/* Sum object */}
-                    {session.itemSum ? Object.entries(session.itemSum).map(([key, value]) => {
+                    {session.itemSum ? Object.entries(session.itemSum).map(([key, value], index) => {
                         return <Text key={`${session.session_id}_${key}_key`}>{`${key}: ${value}`}</Text>
                     })
                         : <Text>No sum object</Text>

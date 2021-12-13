@@ -14,8 +14,6 @@ target 'GeoTrasherRealm' do
 
   pod 'RealmJS', :path => '../node_modules/realm'
 
-  pod 'react-native-location', :path => '../node_modules/react-native-location'
-
   target 'GeoTrasherRealmTests' do
     inherit! :complete
     # Pods for testing
