@@ -5,7 +5,8 @@ const dbPath = 'GeoTrasherData.realm';
 itemSchema = {
     name: 'item_details',
     properties: {
-        name: 'string'
+        name: 'string',
+        location: '{}?'
     }
 }
 
@@ -23,7 +24,7 @@ sessionSchema = {
 let realm = new Realm({
     path: 'GeoTrasherData.realm',
     schema: [sessionSchema, itemSchema],
-    schemaVersion: 3
+    schemaVersion: 4
 });
 
 const getAllSessions = () => {
@@ -63,7 +64,6 @@ const updateSessionById = (_id, sessionData) => {
 }
 
 const updateItemSumsById = async (sessionId, sessionSum) => {
-    const session = await getSessionById(sessionId)[0]
     realm.write(() => {
         let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
         ses.itemSum = sessionSum;
