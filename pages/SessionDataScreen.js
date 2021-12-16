@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Alert, ScrollView } from 'react-native';
+import { Text, Alert, ScrollView } from 'react-native';
 import { getAllSessions, deleteSessionById } from './realmSchemas';
 import SessionButton from './components/SessionButton';
 

@@ -97,50 +97,6 @@ const TestScreenFunc = () => {
     const [location, setLocation] = useState({});
     const [timesClicked, setTimesClicked] = useState(0)
 
-    const checkLocationPermission = async () => {
-
-    }
-
-    // const requestLocationPermission = async () => {
-    //     try {
-    //         const granted = await PermissionsAndroid.request(
-    //             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //             {
-    //                 title: "Location Permission",
-    //                 message:
-    //                     "Geolocation is needed for locating the trash",
-    //                 buttonNeutral: "Ask Me Later",
-    //                 buttonNegative: "Cancel",
-    //                 buttonPositive: "OK"
-    //             }
-    //         );
-    //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //             console.log("Location permitted");
-    //         } else {
-    //             console.log("Location denied");
-    //         }
-
-    //         const granted2 = await PermissionsAndroid.request(
-    //             PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-    //             {
-    //                 title: "Location Permission",
-    //                 message:
-    //                     "Geolocation is needed for locating the trash",
-    //                 buttonNeutral: "Ask Me Later",
-    //                 buttonNegative: "Cancel",
-    //                 buttonPositive: "OK"
-    //             }
-    //         );
-    //         if (granted2 === PermissionsAndroid.RESULTS.GRANTED) {
-    //             console.log("Location permitted");
-    //         } else {
-    //             console.log("Location denied");
-    //         }
-    //     } catch (err) {
-    //         console.warn(err);
-    //     }
-    // };
-
     const getLocationPermission = async () => {
         const hasFineLocationPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
         const hasCoarseLocationPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);

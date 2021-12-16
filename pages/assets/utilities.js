@@ -42,43 +42,14 @@ export const checkLocationPermission = async () => {
 
 export const getCurrentPosition = async (hasLocationPermission, successFunction) => {
     console.log("getCurrentPosition, has permission: ", hasLocationPermission)
-    let position = { latitude: null, longitude: null, timestamp: null };
     if (hasLocationPermission) {
         Geolocation.getCurrentPosition(
             // onSuccess: 
             (position) => successFunction(position),
-            // (pos) => {
-            //     console.log("got pos", pos);
-            //     position = {
-            //         longitude: pos.coords.longitude,
-            //         latitude: pos.coords.latitude,
-            //         timestamp: pos.timestamp
-            //     };
-            //     console.log("returning position")
-            //     return position
-            // },
             (error) => {
-                // See error code charts below.
                 console.log(error.code, error.message);
             },
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
         );
     }
 }
-
-
-// export const getCurrentPosition = (hasLocationPermission) => {
-//     console.log("")
-//     if (hasLocationPermission) {
-//         Geolocation.getCurrentPosition(
-//             (position) => {
-//                 console.log(position);
-//             },
-//             (error) => {
-//                 // See error code charts below.
-//                 console.log(error.code, error.message);
-//             },
-//             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-//         );
-//     }
-// }

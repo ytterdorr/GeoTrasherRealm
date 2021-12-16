@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, Button, TouchableOpacity, SafeAreaView, StyleSheet, Alert } from "react-native";
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Alert } from "react-native";
 import Colors from "./assets/Colors";
 import ItemsCounter from "./components/ItemsCounter";
 import KeyEvent from 'react-native-keyevent';
 
 import realm, { addItemToSession, updateItemSumsById } from "./realmSchemas";
-import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "./assets/utitities";
+import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "./assets/utilities";
 
 class SessionScreen extends React.Component {
     constructor(props) {
@@ -109,7 +109,6 @@ class SessionScreen extends React.Component {
     }
 
     // Need to do function chaining because of silly Geolocation package?
-
     storeNewItem = async ({ name }) => {
         if (!this.state.hasLocationPermission) {
             try {
@@ -136,11 +135,15 @@ class SessionScreen extends React.Component {
             await addItemToSession(this.state.sessionId, { name: name, location: location });
             await updateItemSumsById(this.state.sessionId, this.state.itemCounts)
         }
+
+        // Chain function in position function
         getCurrentPosition(this.state.hasLocationPermission, storeItemWithPosition)
+        // Might be good to turn into a promise, but I am not too sure how to do that
 
     }
 
     getItemNameFromMultiClick = () => {
+
         let multiClickCount = this.state.multiClickCount;
 
         if (multiClickCount > this.state.items.length) {
@@ -155,38 +158,29 @@ class SessionScreen extends React.Component {
 
 
     updateItemCount = async () => {
-        // const multiClickCount = this.state.multiClickCount
-
-        // if (multiClickCount > this.state.items.length) {
-        //     multiClickCount = this.state.items.length
-        // }
-
-        // let index = multiClickCount - 1;
-        // let selectedItem = this.state.items[index];
+        // Update item counts in state
         const selectedItem = this.getItemNameFromMultiClick();
         let itemCounts = this.state.itemCounts;
         itemCounts[selectedItem] += 1;
         console.log("ItemCounts in updateItemCount: ", itemCounts)
         this.setState({ itemCounts: itemCounts })
-
-
-
     }
 
     onTimeOut = () => {
         console.log("Time's up")
         console.log("timer: " + this.state.multiClickTimer);
-        const name = this.getItemNameFromMultiClick()
         this.updateItemCount(this.state.multiClickCount)
+
+        // Store new item
+        const name = this.getItemNameFromMultiClick()
+        this.storeNewItem({ name });
+
         // Reset counters
         this.setState({
             timerRunning: false,
             count: this.state.count + 1,
             multiClickCount: 0
         });
-        this.storeNewItem({ name });
-
-
     }
 
 
