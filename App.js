@@ -6,40 +6,50 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { Provider as PaperProvider } from 'react-native-paper';
+
 import HomeScreen from './pages/HomeScreen';
 import SessionScreen from './pages/SessionScreen';
 import TestScreen from './pages/TestScreen';
 import SessionDataScreen from './pages/SessionDataScreen';
+import PaperScreen from './pages/PaperScreen';
 
 const Stack = createStackNavigator();
 
 
 function App() {
     return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="HomeScreen">
-                <Stack.Screen
-                    name="HomeScreen"
-                    component={HomeScreen}
-                    options={{ title: 'Home' }}
-                />
-                <Stack.Screen
-                    name="SessionScreen"
-                    component={SessionScreen}
-                    options={{ title: "Session" }} />
+        <PaperProvider>
 
-                <Stack.Screen
-                    name="SessionDataScreen"
-                    component={SessionDataScreen}
-                    options={{ title: 'Session Data' }}
-                />
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName="HomeScreen">
+                    <Stack.Screen
+                        name="HomeScreen"
+                        component={HomeScreen}
+                        options={{ title: 'Home' }}
+                    />
+                    <Stack.Screen
+                        name="SessionScreen"
+                        component={SessionScreen}
+                        options={{ title: "Session" }} />
 
-                <Stack.Screen
-                    name="TestScreen"
-                    component={TestScreen}
-                    options={{ title: "Test Screen" }} />
-            </Stack.Navigator>
-        </NavigationContainer>
+                    <Stack.Screen
+                        name="SessionDataScreen"
+                        component={SessionDataScreen}
+                        options={{ title: 'Session Data' }}
+                    />
+
+                    <Stack.Screen
+                        name="TestScreen"
+                        component={TestScreen}
+                        options={{ title: "Test Screen" }} />
+                    <Stack.Screen
+                        name="PaperScreen"
+                        component={PaperScreen}
+                        options={{ title: "Paper Screen" }} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </PaperProvider>
     )
 }
 
