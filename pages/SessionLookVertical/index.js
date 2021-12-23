@@ -1,3 +1,3 @@
-import SessionLook from './SessionLook'
+import SessionLook from './SessionVertical'
 
 export default SessionLook;
