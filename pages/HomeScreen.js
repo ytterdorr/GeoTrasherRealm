@@ -22,24 +22,6 @@ const HomeScreen = ({ navigation }) => {
                 flexDirection: 'column',
             }}>
             <MyText text="RealM Example" />
-            <MyButton
-                title="New session"
-                customClick={() => navigation.navigate('SessionScreen')}
-            />
-            <MyButton
-                title="Session Data"
-                customClick={() => navigation.navigate('SessionDataScreen')}
-            />
-            <MyButton
-                title="test screen"
-                customClick={() => navigation.navigate('TestScreen')}
-            />
-            <Button
-                mode="outlined"
-                onPress={() => navigation.navigate('PaperScreen')}
-            >
-                Paper Test
-            </Button>
             <Button
                 mode="outlined"
                 style={{ marginTop: 5 }}
@@ -47,15 +29,14 @@ const HomeScreen = ({ navigation }) => {
             >
                 Session with rotation
             </Button>
-
-            <Button
-                mode="outlined"
-                style={{ marginTop: 5 }}
-                onPress={() => navigation.navigate('SessionLeftScroll')}
-            >
-                Session with left scroll
-            </Button>
-
+            {/* <MyButton
+                title="New session"
+                customClick={() => navigation.navigate('SessionScreen')}
+            /> */}
+            <MyButton
+                title="Session Data"
+                customClick={() => navigation.navigate('SessionDataScreen')}
+            />
 
         </View>
     );
