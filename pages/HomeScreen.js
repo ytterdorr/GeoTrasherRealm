@@ -33,6 +33,11 @@ const HomeScreen = ({ navigation }) => {
                 title="test screen"
                 customClick={() => navigation.navigate('TestScreen')}
             />
+
+            <MyButton
+                title="Session Look Vertical"
+                customClick={() => navigation.navigate('SessionLookVertical')}
+            />
         </View>
     );
 }

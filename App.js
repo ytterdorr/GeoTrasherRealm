@@ -12,7 +12,8 @@ import HomeScreen from './pages/HomeScreen';
 import SessionScreen from './pages/SessionScreen';
 import TestScreen from './pages/TestScreen';
 import SessionDataScreen from './pages/SessionDataScreen';
-import PaperScreen from './pages/PaperScreen';
+import SessionLookVertical from './pages/SessionLookVertical';
+// import PaperScreen from './pages/PaperScreen';
 
 const Stack = createStackNavigator();
 
@@ -43,10 +44,11 @@ function App() {
                         name="TestScreen"
                         component={TestScreen}
                         options={{ title: "Test Screen" }} />
+
                     <Stack.Screen
-                        name="PaperScreen"
-                        component={PaperScreen}
-                        options={{ title: "Paper Screen" }} />
+                        name="SessionLookVertical"
+                        component={SessionLookVertical}
+                        options={{ title: "Session Look" }} />
                 </Stack.Navigator>
             </NavigationContainer>
         </PaperProvider>
