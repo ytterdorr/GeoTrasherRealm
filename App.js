@@ -13,7 +13,9 @@ import SessionScreen from './pages/SessionScreen';
 import TestScreen from './pages/TestScreen';
 import SessionDataScreen from './pages/SessionDataScreen';
 import SessionLookVertical from './pages/SessionLookVertical';
-// import PaperScreen from './pages/PaperScreen';
+import PaperScreen from './pages/PaperScreen';
+import SessionWithRotation from './pages/SessionWithRotation';
+import SessionLeftScroll from './pages/SessionLeftScroll';
 
 const Stack = createStackNavigator();
 
@@ -49,6 +51,23 @@ function App() {
                         name="SessionLookVertical"
                         component={SessionLookVertical}
                         options={{ title: "Session Look" }} />
+                        
+                    <Stack.Screen
+                        name="PaperScreen"
+                        component={PaperScreen}
+                        options={{ title: "Paper Screen" }} />
+
+                    <Stack.Screen
+                        name="SessionWithRotation"
+                        component={SessionWithRotation}
+                        options={{ title: "Paper Screen" }} />
+
+                    <Stack.Screen
+                        name="SessionLeftScroll"
+                        component={SessionLeftScroll}
+                        options={{ title: "Paper Screen" }} />
+
+
                 </Stack.Navigator>
             </NavigationContainer>
         </PaperProvider>

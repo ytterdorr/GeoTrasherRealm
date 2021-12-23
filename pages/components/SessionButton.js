@@ -35,7 +35,7 @@ const SessionButton = ({ session, deleteSessionPrompt }) => {
                 <View>
                     {session.items.map((item, index) => (
                         <View>
-                            <Text key={`${item.name}${index}`}>{item.name}</Text>
+                            <Text key={`${item.name}_title_${index}`}>{item.name}</Text>
                             {item.location
                                 ? <View>
                                     <Text>{`latitude: ${item.location.latitude}`}</Text>
@@ -49,9 +49,9 @@ const SessionButton = ({ session, deleteSessionPrompt }) => {
                     )}
                     {/* Sum object */}
                     {session.itemSum ? Object.entries(session.itemSum).map(([key, value], index) => {
-                        return <Text key={`${session.session_id}_${key}_key`}>{`${key}: ${value}`}</Text>
+                        return <Text key={`${session.session_id}_${key}_key_${index}`}>{`${key}: ${value}`}</Text>
                     })
-                        : <Text>No sum object</Text>
+                        : <Text key="uniqueKey">No sum object</Text>
                     }
                 </View>
             )
