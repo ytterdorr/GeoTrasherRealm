@@ -2,6 +2,7 @@ import React from "react";
 import { View } from 'react-native';
 import MyButton from './components/MyButton';
 import MyText from './components/MyText';
+import { Button } from 'react-native-paper';
 
 // TODO:
 // (Long term) Figure out how to handle schema updates
@@ -33,6 +34,29 @@ const HomeScreen = ({ navigation }) => {
                 title="test screen"
                 customClick={() => navigation.navigate('TestScreen')}
             />
+            <Button
+                mode="outlined"
+                onPress={() => navigation.navigate('PaperScreen')}
+            >
+                Paper Test
+            </Button>
+            <Button
+                mode="outlined"
+                style={{ marginTop: 5 }}
+                onPress={() => navigation.navigate('SessionWithRotation')}
+            >
+                Session with rotation
+            </Button>
+
+            <Button
+                mode="outlined"
+                style={{ marginTop: 5 }}
+                onPress={() => navigation.navigate('SessionLeftScroll')}
+            >
+                Session with left scroll
+            </Button>
+
+
         </View>
     );
 }
