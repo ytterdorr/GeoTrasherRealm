@@ -34,8 +34,8 @@ const ItemsCounter = ({ itemList, itemCounts }) => {
                 {
                     Object.keys(itemCounts).map((itemName, index) => {
                         return (
-                            <View>
-                                <Text key={"counter_" + itemName + index}> {`${itemName}: ${itemCounts[itemName]}`
+                            <View key={"counter_" + itemName + index}>
+                                <Text> {`${itemName}: ${itemCounts[itemName]}`
                                 }</Text>
                             </View>
                         )
