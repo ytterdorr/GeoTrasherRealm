@@ -6,7 +6,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 import HomeScreen from './pages/HomeScreen';
 import SessionScreen from './pages/SessionScreen';
@@ -18,10 +18,19 @@ import SessionLeftScroll from './pages/SessionLeftScroll';
 
 const Stack = createStackNavigator();
 
+const theme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        primary: 'green',
+        secondary: 'blue'
+    }
+}
+
 
 function App() {
     return (
-        <PaperProvider>
+        <PaperProvider theme={theme}>
 
             <NavigationContainer>
                 <Stack.Navigator initialRouteName="HomeScreen">
@@ -60,7 +69,6 @@ function App() {
                         name="SessionLeftScroll"
                         component={SessionLeftScroll}
                         options={{ title: "Paper Screen" }} />
-
 
                 </Stack.Navigator>
             </NavigationContainer>

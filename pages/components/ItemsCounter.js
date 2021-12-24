@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from "react-native";
-import { Card, Surface, Title } from 'react-native-paper';
+import { Title, Surface } from 'react-native-paper';
 
 const styles = StyleSheet.create({
     container: {
@@ -19,9 +19,6 @@ const styles = StyleSheet.create({
 })
 
 
-
-
-
 const ItemsCounter = ({ itemList, itemCounts }) => {
 
 
@@ -35,8 +32,12 @@ const ItemsCounter = ({ itemList, itemCounts }) => {
 
                 {
                     Object.keys(itemCounts).map((itemName, index) => {
-                        return <Text key={"counter_" + itemName + index}> {`${itemName}: ${itemCounts[itemName]}`
-                        }</Text>
+                        return (
+                            <View>
+                                <Text key={"counter_" + itemName + index}> {`${itemName}: ${itemCounts[itemName]}`
+                                }</Text>
+                            </View>
+                        )
                     })
                 }
             </Surface>

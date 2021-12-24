@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Alert, Title } from "react-native";
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Alert } from "react-native";
 import Colors from "./assets/Colors";
 import ItemsCounter from "./components/ItemsCounter";
 import KeyEvent from 'react-native-keyevent';
@@ -135,7 +135,7 @@ class SessionWithRotation extends React.Component {
             }
             // Store item in database
             await addItemToSession(this.state.sessionId, { name: name, location: location });
-            await updateItemSumsById(this.state.sessionId, this.state.itemCounts)
+            await updateItemSumsById(this.state.sessionId, this.state.itemCounts, this.state.count)
         }
 
         // Chain function in position function

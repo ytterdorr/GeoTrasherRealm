@@ -63,10 +63,11 @@ const updateSessionById = (_id, sessionData) => {
     })
 }
 
-const updateItemSumsById = async (sessionId, sessionSum) => {
+const updateItemSumsById = async (sessionId, sessionSum, totalItems) => {
     realm.write(() => {
         let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
         ses.itemSum = sessionSum;
+        ses.itemCount = totalItems;
     });
 }
 

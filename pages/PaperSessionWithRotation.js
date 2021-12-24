@@ -135,7 +135,7 @@ class PaperSessionWithRotation extends React.Component {
             }
             // Store item in database
             await addItemToSession(this.state.sessionId, { name: name, location: location });
-            await updateItemSumsById(this.state.sessionId, this.state.itemCounts)
+            await updateItemSumsById(this.state.sessionId, this.state.itemCounts, this.state.count)
         }
 
         // Chain function in position function

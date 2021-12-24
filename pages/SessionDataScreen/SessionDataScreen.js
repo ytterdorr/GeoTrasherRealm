@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { Text, Alert, ScrollView } from 'react-native';
-import { getAllSessions, deleteSessionById } from './realmSchemas';
-import SessionButton from './components/SessionButton';
+import { Alert, ScrollView } from 'react-native';
+import { getAllSessions, deleteSessionById } from '../realmSchemas';
+import SessionButton from '../components/SessionButton';
+import TotalsDisplay from './TotalsDisplay';
+
+
 
 const SessionDataScreen = () => {
 
     const [sessions, setSessions] = useState(getAllSessions());
+    console.log("Sessions in sessionDataScreen")
 
     const deleteSessionPrompt = (session) => {
         Alert.alert(
@@ -28,10 +32,8 @@ const SessionDataScreen = () => {
     }
 
     return (
-        <ScrollView>
-            <Text>
-                This is test screen
-            </Text>
+        <ScrollView style={{ height: '100%' }}>
+            <TotalsDisplay sessions={sessions}></TotalsDisplay>
             {sessions.map((session, index) => {
                 console.log(session);
                 return <SessionButton key={`${session.session_name}_${index}`} session={session} deleteSessionPrompt={deleteSessionPrompt} />
