@@ -37,7 +37,10 @@ const HomeScreen = ({ navigation }) => {
                 title="Session Data"
                 customClick={() => navigation.navigate('SessionDataScreen')}
             />
-
+            <MyButton
+                title="Session Look Vertical"
+                customClick={() => navigation.navigate('SessionLookVertical')}
+            />
         </View>
     );
 }

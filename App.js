@@ -12,6 +12,7 @@ import HomeScreen from './pages/HomeScreen';
 import SessionScreen from './pages/SessionScreen';
 import TestScreen from './pages/TestScreen';
 import SessionDataScreen from './pages/SessionDataScreen';
+import SessionLookVertical from './pages/SessionLookVertical';
 import PaperScreen from './pages/PaperScreen';
 import SessionWithRotation from './pages/SessionWithRotation';
 import SessionLeftScroll from './pages/SessionLeftScroll';
@@ -55,6 +56,11 @@ function App() {
                         component={TestScreen}
                         options={{ title: "Test Screen" }} />
 
+                    <Stack.Screen
+                        name="SessionLookVertical"
+                        component={SessionLookVertical}
+                        options={{ title: "Session Look" }} />
+                        
                     <Stack.Screen
                         name="PaperScreen"
                         component={PaperScreen}

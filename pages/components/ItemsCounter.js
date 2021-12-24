@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from "react-native";
 import { Title, Surface } from 'react-native-paper';
 
+
 const styles = StyleSheet.create({
     container: {
         width: '100%',
