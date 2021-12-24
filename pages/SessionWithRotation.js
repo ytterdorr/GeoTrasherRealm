@@ -4,7 +4,7 @@ import Colors from "./assets/Colors";
 import ItemsCounter from "./components/ItemsCounter";
 import KeyEvent from 'react-native-keyevent';
 
-import realm, { addItemToSession, updateItemSumsById } from "./realmSchemas";
+import realm, { addItemToSession, updateItemSumsAndTotalById } from "./realmSchemas";
 import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "./assets/utilities";
 
 import ItemCarousel from './components/ItemCarousel';
@@ -135,7 +135,7 @@ class SessionWithRotation extends React.Component {
             }
             // Store item in database
             await addItemToSession(this.state.sessionId, { name: name, location: location });
-            await updateItemSumsById(this.state.sessionId, this.state.itemCounts, this.state.count)
+            await updateItemSumsAndTotalById(this.state.sessionId, this.state.itemCounts, this.state.count)
         }
 
         // Chain function in position function
