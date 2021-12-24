@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Alert, Title } from "react-native";
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Alert, Title, Image } from "react-native";
 import Colors from "../assets/Colors";
 import ItemsCounter from "./ItemsCounter";
 import KeyEvent from 'react-native-keyevent';
@@ -7,6 +7,7 @@ import ItemCarousel from './ItemCarousel';
 
 import realm, { addItemToSession, updateItemSumsAndTotalById } from "../realmSchemas";
 import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "../assets/utilities";
+import images from '../assets/images'
 
 // Byt ut itemCounts på följande ställen:
 
@@ -36,16 +37,17 @@ const styles = StyleSheet.create({
 
 });
 
+
 class SessionVertical extends React.Component {
     constructor(props) {
         super(props);
         const itemList = [
-            { name: 'nicotine', color: 'red', value: 0 },
-            { name: 'plastic', color: 'blue', value: 0 },
-            { name: 'paper', color: 'orange', value: 0 },
-            { name: 'food', color: 'olive', value: 0 },
-            { name: 'glass', color: 'aqua', value: 0 },
-            { name: 'other', color: 'purple', value: 0 },
+            { name: 'nicotine', color: 'red', value: 0, image: images.nicotine },
+            { name: 'plastic', color: 'blue', value: 0, image: images.plastic },
+            { name: 'paper', color: 'orange', value: 0, image: images.paper },
+            { name: 'food', color: 'olive', value: 0, image: images.food },
+            { name: 'glass', color: 'aqua', value: 0, image: images.glass },
+            { name: 'other', color: 'purple', value: 0, image: images.other },
         ]
 
         this.state = {
@@ -257,6 +259,7 @@ class SessionVertical extends React.Component {
                         multiClickCount={this.state.multiClickCount}
                     ></ItemCarousel>
                     <Text>Total: {this.state.totalCount}</Text>
+                    
                     <ItemsCounter
                         itemList={this.state.items}
                     />
