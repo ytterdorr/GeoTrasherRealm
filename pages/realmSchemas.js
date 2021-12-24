@@ -50,7 +50,6 @@ const getSessionById = (_id) => {
 const addItemToSession = async (sessionId, item) => {
     console.log("addItemToSession")
     let session = await getSessionById(sessionId)[0]
-    console.log("session: ", session)
     realm.write(() => {
         let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
         ses.items.push(item)
@@ -83,7 +82,8 @@ export {
     getAllSessions,
     deleteSessionById,
     addItemToSession,
-    updateItemSumsById
+    updateItemSumsById,
+    updateItemSumsAndTotalById
 }
 
 export default realm;

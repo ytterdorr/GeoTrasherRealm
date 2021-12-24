@@ -48,7 +48,9 @@ const SessionDataTable = ({ session }) => {
                         </DataTable.Title>
                     </DataTable.Header>
 
-                    {Object.keys(session.itemSum).map(itemName => {
+                    {Object.entries(session.itemSum).sort(function (a, b) {
+                        return b[1] - a[1]
+                    }).map(([itemName, value]) => {
                         return (
                             <DataTable.Row key={`${session.session_name}_${itemName}`}>
                                 <DataTable.Cell >
@@ -58,7 +60,7 @@ const SessionDataTable = ({ session }) => {
                                 </DataTable.Cell>
                                 <DataTable.Cell numeric>
                                     <Text style={styles.tableCellText}>
-                                        {session.itemSum[itemName]}
+                                        {value}
                                     </Text>
                                 </DataTable.Cell>
                             </DataTable.Row>

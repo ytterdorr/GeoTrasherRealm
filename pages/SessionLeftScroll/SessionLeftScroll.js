@@ -31,7 +31,6 @@ const ItemRow = ({ item }) => {
 }
 
 const ItemCounter = ({ items }) => {
-    console.log(items)
     return (<View style={{ flex: 2, flexDirection: 'column' }}>
         <Text>ItemCounter</Text>
         {items.map((item, index) => {

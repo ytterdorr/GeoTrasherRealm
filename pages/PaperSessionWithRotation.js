@@ -37,9 +37,6 @@ class PaperSessionWithRotation extends React.Component {
         let id = 0;
         const length = realm.objects('session_details').length
         if (length) {
-            console.log("Got length", length);
-            const realmObjs = realm.objects('session_details');
-            console.log("realmObjs", realmObjs);
             id = await realm.objects('session_details').sorted('session_id', true)[0].session_id + 1
         }
 

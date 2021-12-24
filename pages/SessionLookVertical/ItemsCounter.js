@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 import { Card, Surface, Title } from 'react-native-paper';
 
-const buttonWidth = Dimensions.get('window').width*0.1
+const buttonWidth = Dimensions.get('window').width * 0.1
 
 const styles = StyleSheet.create({
     container: {
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
-        marginTop: buttonWidth/4,
+        marginTop: buttonWidth / 4,
         paddingRight: '10%',
         paddingLeft: '10%',
     },
@@ -33,12 +33,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingRight: '20%'
     },
-    
+
     icon: {
-        borderRadius: buttonWidth/2,
+        borderRadius: buttonWidth / 2,
         width: buttonWidth,
         aspectRatio: 1,
-        marginRight: buttonWidth/2,
+        marginRight: buttonWidth / 2,
     },
 })
 
@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
 const TypeCounterRow = ({ item }) => {
     return (
         <View style={styles.typeCounterRow}>
-            <Image 
-            style={{ height: buttonWidth, width: buttonWidth }}
-            source={item.image} />
-            <Text style={{fontWeight: 'bold', fontSize: 20}}>{`${item.name}`}</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 20}}>{`${item.value}`}</Text>
+            <Image
+                style={{ height: buttonWidth, width: buttonWidth }}
+                source={item.image} />
+            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{`${item.name}`}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{`${item.value}`}</Text>
         </View>
     )
 }
@@ -58,7 +58,7 @@ const TypeCounterRow = ({ item }) => {
 
 
 
-const ItemsCounter = ({ itemList}) => {
+const ItemsCounter = ({ itemList }) => {
 
     return (
         <View style={styles.container}>
@@ -69,7 +69,7 @@ const ItemsCounter = ({ itemList}) => {
             >
                 {
                     itemList.map(item => {
-                        return <TypeCounterRow item={item}></TypeCounterRow>
+                        return <TypeCounterRow item={item} key={`counter_${item.name}`}></TypeCounterRow>
                     })
 
                 }

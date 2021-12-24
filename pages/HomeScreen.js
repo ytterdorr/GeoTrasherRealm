@@ -1,8 +1,10 @@
 import React from "react";
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
+import { Title } from 'react-native-paper';
 import MyButton from './components/MyButton';
 import MyText from './components/MyText';
 import { Button } from 'react-native-paper';
+// import { nicotine } from './assets/images';
 
 // TODO:
 // (Long term) Figure out how to handle schema updates
@@ -12,6 +14,12 @@ import { Button } from 'react-native-paper';
 // - Geoposition
 // Add KeyEvent handler
 
+const buttonStyle = {
+    marginBottom: 15,
+    padding: 10,
+    fontSize: 20,
+}
+
 const HomeScreen = ({ navigation }) => {
 
     return (
@@ -20,28 +28,31 @@ const HomeScreen = ({ navigation }) => {
                 flex: 1,
                 backgroundColor: 'white',
                 flexDirection: 'column',
+                justifyContent: 'space-between',
             }}>
-            <MyText text="RealM Example" />
-            <Button
-                mode="outlined"
-                style={{ marginTop: 5 }}
-                onPress={() => navigation.navigate('SessionWithRotation')}
-            >
-                Session with rotation
-            </Button>
-            {/* <MyButton
-                title="New session"
-                customClick={() => navigation.navigate('SessionScreen')}
-            /> */}
-            <MyButton
-                title="Session Data"
-                customClick={() => navigation.navigate('SessionDataScreen')}
-            />
-            <MyButton
-                title="Session Look Vertical"
-                customClick={() => navigation.navigate('SessionLookVertical')}
-            />
-        </View>
+            <Title>Hej</Title>
+            <View style={{ flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 40 }}>
+                <Button style={buttonStyle}
+                    mode="contained"
+                    onPress={() => navigation.navigate('SessionLookVertical')}
+                >
+                    Session with icons
+
+                </Button>
+                <Button
+                    mode="contained"
+                    style={buttonStyle}
+                    onPress={() => navigation.navigate('SessionWithRotation')}
+                >
+                    Session with rotation
+                </Button>
+                <Button style={buttonStyle}
+                    mode="contained"
+                    onPress={() => navigation.navigate('SessionDataScreen')}
+                >Session Data</Button>
+            </View>
+
+        </View >
     );
 }
 

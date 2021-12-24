@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
 })
 
 const getItemTotals = (sessions) => {
-    console.log("Sessions in getItemTotals", sessions)
     let itemTotals = {}
     // Get all item sums
     sessions.forEach((session) => {
@@ -63,10 +62,7 @@ const Sums = ({ sessions }) => {
     )
 }
 
-const TotalsDisplay = ({ sessions, theme }) => {
-
-    console.log("sessions in TotalDisplay:")
-    console.log(sessions)
+const TotalsDisplay = ({ sessions }) => {
 
     const itemTotals = getItemTotals(sessions)
 
