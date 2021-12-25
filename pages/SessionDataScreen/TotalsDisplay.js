@@ -10,8 +10,6 @@ const colors = {
 const styles = StyleSheet.create({
     container: {
         // backgroundColor: colors.brightPurple,
-        borderWidth: 1,
-        borderRadius: 20,
         padding: 15,
         alignItems: "center",
 
@@ -31,6 +29,9 @@ const styles = StyleSheet.create({
 })
 
 const getItemTotals = (sessions) => {
+    if (!sessions || !sessions.length) {
+        return { total: 0 }
+    }
     let itemTotals = {}
     // Get all item sums
     sessions.forEach((session) => {
