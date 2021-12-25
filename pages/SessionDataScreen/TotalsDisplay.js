@@ -48,9 +48,9 @@ const Sums = ({ sessions }) => {
     const totals = getItemTotals(sessions)
     return (
         <View>
-            {/* <Text>Best</Text> */}
+
             {
-                Object.entries(totals).map(([key, value]) => {
+                Object.entries(totals).sort((a, b) => b[1] - a[1]).map(([key, value]) => {
 
                     return (
                         key === 'total' ? null :
