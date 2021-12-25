@@ -16,7 +16,7 @@ import SessionLookVertical from './pages/SessionLookVertical';
 import PaperScreen from './pages/PaperScreen';
 import SessionWithRotation from './pages/SessionWithRotation';
 import SessionLeftScroll from './pages/SessionLeftScroll';
-
+import SessionButtonTop from './pages/SessionButtonTop';
 const Stack = createStackNavigator();
 
 const theme = {
@@ -75,6 +75,13 @@ function App() {
                         name="SessionLeftScroll"
                         component={SessionLeftScroll}
                         options={{ title: "Paper Screen" }} />
+                    
+                    <Stack.Screen
+                        name="SessionButtonTop"
+                        component={SessionButtonTop}
+                        options={{ title: "Button on top" }} />
+
+
 
                 </Stack.Navigator>
             </NavigationContainer>

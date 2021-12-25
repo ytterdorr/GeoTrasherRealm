@@ -39,6 +39,13 @@ const HomeScreen = ({ navigation }) => {
                     Session with icons
 
                 </Button>
+                <Button style={buttonStyle}
+                    mode="contained"
+                    onPress={() => navigation.navigate('SessionButtonTop')}
+                >
+                    Session with Button image
+
+                </Button>
                 <Button
                     mode="contained"
                     style={buttonStyle}

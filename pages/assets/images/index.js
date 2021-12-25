@@ -1,11 +1,33 @@
 
+import nicotine from './cig.png';
+import plastic from './plastic.png';
+import paper from './paper.png';
+import food from './food.png';
+import glass from './glass.png';
+import metal from './metal.png';
+import other from './other.png';
+import push from './push.png';
+
+export {
+    nicotine, 
+    plastic,
+    paper,
+    food,
+    glass,
+    metal,
+    other,
+    push,
+}
+
 const images = {
-    nicotine: require('./cig.png'),
-    plastic: require('./plastic.png'),
-    paper: require('./paper.png'),
-    food: require('./food.png'),
-    glass: require('./glass.png'),
-    other: require('./other.png'),
-    }
+    nicotine, 
+    plastic,
+    paper,
+    food,
+    glass,
+    metal,
+    other,
+    push,
+}
 
 export default images;
