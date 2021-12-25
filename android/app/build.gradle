@@ -217,7 +217,8 @@ dependencies {
     }
 
     // For keyevent
-    compile project(':react-native-keyevent')
+    api project(':react-native-keyevent')
+
 }
 
 // Run this once to be able to run the application with BUCK

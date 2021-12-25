@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, ScrollView } from 'react-native';
+import { Alert, ScrollView, Text } from 'react-native';
 import { getAllSessions, deleteSessionById } from '../realmSchemas';
 import SessionButton from '../components/SessionButton';
 import TotalsDisplay from './TotalsDisplay';
@@ -34,10 +34,12 @@ const SessionDataScreen = () => {
     return (
         <ScrollView style={{ height: '100%' }}>
             <TotalsDisplay sessions={sessions}></TotalsDisplay>
-            {sessions.map((session, index) => {
+            {sessions && sessions.length > 0 ? sessions.map((session, index) => {
                 console.log(session);
                 return <SessionButton key={`${session.session_name}_${index}`} session={session} deleteSessionPrompt={deleteSessionPrompt} />
-            })}
+            })
+                : <Text>No session data</Text>
+            }
         </ScrollView>
     )
 }
