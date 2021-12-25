@@ -42,9 +42,9 @@ const HomeScreen = ({ navigation }) => {
                 <Button
                     mode="contained"
                     style={buttonStyle}
-                    onPress={() => navigation.navigate('SessionWithRotation')}
+                    onPress={() => navigation.navigate('SessionBase')}
                 >
-                    Session with rotation
+                    Session Base
                 </Button>
                 <Button style={buttonStyle}
                     mode="contained"
