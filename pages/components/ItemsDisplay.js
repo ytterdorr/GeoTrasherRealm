@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '25%',
+        height: '20%',
         width: '50%',
         marginTop: '1%',
         paddingHorizontal: '4%'
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     },
     typeCounter: {
         width: '100%',
-        height: '100%',
+        height: '75%',
         flexDirection: 'row',
         justifyContent: 'center',
         flexWrap: 'wrap',

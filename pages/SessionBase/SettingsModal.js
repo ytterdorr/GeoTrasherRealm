@@ -30,7 +30,6 @@ const SettingsModal = ({
 }) => {
 
     const [multiClickTime, setMultiClickTime] = React.useState(clickerTime.current)
-    const [text, setText] = React.useState("hej")
     const [radioChoice, setRadioChoice] = React.useState(views.selected)
     console.log("visible:", visible)
 
