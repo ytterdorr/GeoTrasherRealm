@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import { View, Text, SafeAreaView, StyleSheet, Alert } from "react-native";
 import { Button, Menu, Divider } from 'react-native-paper';
 import Colors from "../assets/Colors";
-import ItemsCounter from "./ItemsCounter";
 import KeyEvent from 'react-native-keyevent';
-import ItemCarousel from './ItemCarousel';
 
 import realm, { addItemToSession, updateItemSumsAndTotalById } from "../realmSchemas";
 import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "../assets/utilities";
 import images from '../assets/images'
 import SessionLookVertical from './SessionLook'
 import SessionLeftScroll from './SessionLeftScroll';
-import SessionWithRotation from './SessionWithRotation';
+import SessionWithRotation from './SessionWithRotation'
+import SessionButtonTop from "./SessionButtonTop";
 
 // SessionBase should handle logic, but nothing of how it looks. All Looks should be imported. 
 
@@ -52,6 +51,7 @@ class SessionBase extends React.Component {
             { name: 'plastic', color: 'blue', value: 0, image: images.plastic },
             { name: 'paper', color: 'orange', value: 0, image: images.paper },
             { name: 'food', color: 'olive', value: 0, image: images.food },
+            { name: 'metal', color: 'beige', value: 0, image: images.metal },
             { name: 'glass', color: 'aqua', value: 0, image: images.glass },
             { name: 'other', color: 'purple', value: 0, image: images.other },
         ]
@@ -90,6 +90,15 @@ class SessionBase extends React.Component {
                     counterPress={this.counterPress}
                     totalCount={this.state.totalCount}
                 />)
+            case "SessionButtonTop":
+                console.log("Get view SessionButtonTop")
+                return (<SessionButtonTop
+                    multiClickCount={this.state.multiClickCount}
+                    itemList={this.state.items}
+                    counterPress={this.counterPress}
+                    totalCount={this.state.totalCount}
+                />
+                )
             default:
                 console.log("Default view");
                 return (<SessionLookVertical
@@ -120,6 +129,10 @@ class SessionBase extends React.Component {
                 this.setState({
                     view: "SessionWithRotation"
                 })
+                break;
+            case "SessionButtonTop":
+                console.log("Set view SessionButtonTop");
+                this.setState({ view: "SessionButtonTop" })
                 break;
             default:
                 console.log("Default view");
@@ -153,6 +166,7 @@ class SessionBase extends React.Component {
                     <Menu.Item onPress={() => { this.setView('SessionLeftScroll') }} title="SessionLeftScroll" />
                     <Divider />
                     <Menu.Item onPress={() => { this.setView("SessionWithRotation") }} title="SessionWithRotation" />
+                    <Menu.Item onPress={() => { this.setView("SessionButtonTop") }} title="SessionButtonTop" />
                 </Menu>
             </View>
         );

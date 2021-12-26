@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { getAllSessions, getSummary } from './realmSchemas';
 import TotalsDisplay from "./components/TotalsDisplay";
-// import { nicotine } from './assets/images';
 
 // TODO:
 // (Long term) Figure out how to handle schema updates
@@ -33,15 +32,11 @@ const HomeScreen = ({ navigation }) => {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
             }}>
-            <TotalsDisplay sessions={sessions}></TotalsDisplay>
-            <View style={{ flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 40 }}>
-                <Button style={buttonStyle}
-                    mode="contained"
-                    onPress={() => navigation.navigate('SessionLookVertical')}
-                >
-                    Session with icons
+            <View style={{ height: '30%' }}>
 
-                </Button>
+                <TotalsDisplay sessions={sessions}></TotalsDisplay>
+            </View>
+            <View style={{ flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 40 }}>
                 <Button style={buttonStyle}
                     mode="contained"
                     onPress={() => navigation.navigate('SessionButtonTop')}
