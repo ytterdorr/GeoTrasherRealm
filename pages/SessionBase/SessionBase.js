@@ -11,10 +11,19 @@ import SessionLookVertical from './SessionLook'
 import SessionLeftScroll from './SessionLeftScroll';
 import SessionWithRotation from './SessionWithRotation'
 import SessionButtonTop from "./SessionButtonTop";
+import SettingsModal from "./SettingsModal";
 
 // SessionBase should handle logic, but nothing of how it looks. All Looks should be imported. 
 
 // get user settings
+
+const availableViews = {
+    SessionLookVertical: "SessionLookVertical",
+    SessionLeftScroll: "SessionLeftScroll",
+    SessionWithRotation: "SessionWithRotation",
+    SessionButtonTop: "SessionButtonTop",
+}
+availableViews.default = availableViews.SessionButtonTop
 
 
 const styles = StyleSheet.create({
@@ -58,6 +67,7 @@ class SessionBase extends React.Component {
 
         this.state = {
             view: "SessionButtonTop",
+            clickerTime: 600,
             hasLocationPermission: null,
             multiClickTimer: null,
             timerRunning: false,
@@ -68,6 +78,18 @@ class SessionBase extends React.Component {
             sessionId: 0,
             showSettings: false,
         }
+    }
+
+    showSettings = () => {
+        this.setState({ showSettings: true })
+    }
+
+    hideSettings = () => {
+        this.setState({ showSettings: false })
+    }
+
+    setClickerTime = (timeInMs) => {
+        this.setState({ clickerTime: timeInMs })
     }
 
     getView = () => {
@@ -116,37 +138,19 @@ class SessionBase extends React.Component {
         }
     }
 
-    setView = (viewName) => {
-        switch (viewName) {
-            case "SessionLookVertical":
-                console.log("Set state SessionLookVertical")
-                this.setState({
-                    view: "SessionLookVertical"
-                })
-                break;
-            case "SessionLeftScroll":
-                console.log("Set state SessionLeftScroll")
-                this.setState({
-                    view: "SessionLeftScroll"
-                })
-                break;
-            case "SessionWithRotation":
-                console.log("Set view SessionWithRotation");
-                this.setState({
-                    view: "SessionWithRotation"
-                })
-                break;
-            case "SessionButtonTop":
-                console.log("Set view SessionButtonTop");
-                this.setState({ view: "SessionButtonTop" })
-                break;
-            default:
-                console.log("Default view");
-                this.setState({
-                    view: "SessionButtonTop"
-                })
+    setView = async (viewName) => {
+        console.log("Trying to set view", viewName)
+        Object.keys(availableViews).forEach(name => {
+            if (viewName === name) {
+                console.log("Set view:", availableViews[viewName])
+                this.setState({ view: availableViews[viewName] })
+                return
+            } else {
+                console.log(`${viewName} != ${name}`)
+            }
+        })
 
-        }
+        // this.setState({ view: availableViews.default })
     }
 
     menuStuff = () => {
@@ -167,12 +171,18 @@ class SessionBase extends React.Component {
                     visible={visible}
                     onDismiss={closeMenu}
                     anchor={<Button onPress={openMenu}>Show menu</Button>}>
-                    <Menu.Item onPress={() => { this.setView('SessionLookVertical') }} title="SessionLookVertical" />
+                    {/* <Menu.Item onPress={() => { this.setView('SessionLookVertical') }} title="SessionLookVertical" />
                     <Menu.Item onPress={() => { this.setView('SessionLeftScroll') }} title="SessionLeftScroll" />
                     <Divider />
                     <Menu.Item onPress={() => { this.setView("SessionWithRotation") }} title="SessionWithRotation" />
                     <Menu.Item onPress={() => { this.setView("SessionButtonTop") }} title="SessionButtonTop" />
-                    <Menu.Item onPress={() => { this.undoLastItem() }} title="Undo item" />
+                */}
+                    <Menu.Item icon='cog' onPress={() => {
+                        this.showSettings()
+                        closeMenu()
+                    }
+                    } title="Settings" />
+                    <Menu.Item icon='undo' onPress={() => { this.undoLastItem() }} title="Undo item" />
                 </Menu>
             </View>
         );
@@ -415,8 +425,6 @@ class SessionBase extends React.Component {
         const name = this.state.items[index].name
         this.storeNewItem({ name }).catch(err => console.log(err));
 
-
-
         // Reset counters
         this.setState({
             timerRunning: false,
@@ -435,7 +443,7 @@ class SessionBase extends React.Component {
 
         this.setState({
             multiClickCount: this.state.multiClickCount + 1,
-            multiClickTimer: setTimeout(this.onTimeOut, 500),
+            multiClickTimer: setTimeout(this.onTimeOut, this.state.clickerTime),
             timerRunning: true
         })
         console.log("Pressed Button")
@@ -447,12 +455,20 @@ class SessionBase extends React.Component {
     }
 
     render() {
+        console.log("Clicker time", this.state.clickerTime)
         return (
             <SafeAreaView>
-                {this.getView()
+                {
+                    this.getView()
                 }
+                <SettingsModal
+                    visible={this.state.showSettings}
+                    onDismiss={() => this.hideSettings()}
+                    // Settable stuff
+                    clickerTime={{ current: this.state.clickerTime, set: this.setClickerTime }}
+                    views={{ available: availableViews, selected: this.state.view, set: (value) => this.setView(value) }}
 
-
+                />
             </SafeAreaView >
         )
     }
