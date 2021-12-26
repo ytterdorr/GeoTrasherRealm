@@ -5,7 +5,7 @@ import ItemsCounter from "./ItemsCounter";
 import KeyEvent from 'react-native-keyevent';
 import ItemCarousel from './ItemCarousel';
 
-import realm, { addItemToSession, updateItemSumsAndTotalById } from "../realmSchemas";
+import realm, { addItemToSession, updateItemSumsAndTotalById, popLastItem } from "../realmSchemas";
 import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "../assets/utilities";
 import images from '../assets/images'
 
@@ -166,7 +166,7 @@ class SessionButtonTop extends React.Component {
 
                 await addItemToSession(this.state.sessionId, { name: name, location: location });
             } catch (error) {
-                console.log("Fail add Item to session in realm")
+                console.error("Fail add Item to session in realm")
                 console.log(error)
             }
 
@@ -196,6 +196,44 @@ class SessionButtonTop extends React.Component {
 
     }
 
+
+
+    undoLastItem = async () => {
+        if (this.state.totalCount <= 0){
+            return
+        }
+
+        let lastItem;
+        try{
+            lastItem = await popLastItem(this.state.sessionId);
+            console.log('returned?', lastItem)
+        } catch (error) {
+            console.log("Fail popLastItem from session in realm")
+            console.log(error)
+        }
+        
+        // Update item sums
+        let itemSums = {}
+        let tmpItems = [...this.state.items];
+        tmpItems.forEach(item => {
+            // Update state if match
+            if (item.name === lastItem.name) {
+                item.value -= 1
+                this.setState({ items: tmpItems, totalCount: this.state.totalCount - 1 })            
+            }
+            // Update sums object
+            itemSums[item.name]= item.value
+        })
+
+        try {
+            await updateItemSumsAndTotalById(this.state.sessionId, itemSums, this.state.totalCount)
+        } catch (error) {
+            console.error("Fail update items sums in realm")
+            console.log(error)
+        }
+    }
+
+    
 
     updateItemCount = async () => {
         // Update item counts in state
@@ -271,6 +309,14 @@ class SessionButtonTop extends React.Component {
                         itemList={this.state.items}
                     />
                 
+                <TouchableOpacity
+                        style={styles.button}
+                        onPress={this.undoLastItem}
+                    >
+                        <Text style={styles.buttonText}>
+                            Undo last item
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </SafeAreaView >
         )
