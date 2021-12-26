@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
-import { Card, Surface, Title } from 'react-native-paper';
+import { View, Text, StyleSheet, Image } from "react-native";
+import { Title } from 'react-native-paper';
 
-//const buttonWidth = Dimensions.get('window').height*0.1
+// Need to be fitted in a container to adjust height
 
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: '40%',
+        height: '100%',
         flexDirection: 'column',
         alignItems: 'center',
     },

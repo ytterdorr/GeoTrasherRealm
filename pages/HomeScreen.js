@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text } from 'react-native';
-import { Title } from 'react-native-paper';
-import MyButton from './components/MyButton';
-import MyText from './components/MyText';
+import { View } from 'react-native';
+
 import { Button } from 'react-native-paper';
+import { getAllSessions, getSummary } from './realmSchemas';
+import TotalsDisplay from "./components/TotalsDisplay";
 // import { nicotine } from './assets/images';
 
 // TODO:
@@ -22,6 +22,9 @@ const buttonStyle = {
 
 const HomeScreen = ({ navigation }) => {
 
+    // Todo: add loading?
+    const sessions = getAllSessions();
+
     return (
         <View
             style={{
@@ -30,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
             }}>
-            <Title>Hej</Title>
+            <TotalsDisplay sessions={sessions}></TotalsDisplay>
             <View style={{ flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 40 }}>
                 <Button style={buttonStyle}
                     mode="contained"
