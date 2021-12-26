@@ -2,7 +2,7 @@ import React from "react";
 import { View } from 'react-native';
 
 import { Button } from 'react-native-paper';
-import { getAllSessions, getSummary } from './realmSchemas';
+import { getAllSessions } from './realmSchemas';
 import TotalsDisplay from "./components/TotalsDisplay";
 
 // TODO:
@@ -32,7 +32,7 @@ const HomeScreen = ({ navigation }) => {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
             }}>
-            <View style={{ height: '30%' }}>
+            <View style={{ height: '50%' }}>
 
                 <TotalsDisplay sessions={sessions}></TotalsDisplay>
             </View>
