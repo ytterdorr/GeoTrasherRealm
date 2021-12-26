@@ -1,5 +1,6 @@
 import React from "react";
-import { View, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
+import { Button } from 'react-native-paper';
 import Colors from "../../assets/Colors";
 import ItemsCounter from "./ItemsCounter";
 import ItemCarousel from './ItemCarousel';
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
 });
 
 
-const SessionButtonTop = ({ counterPress, multiClickCount, itemList, totalCount }) => {
+const SessionButtonTop = ({ counterPress, multiClickCount, itemList, totalCount, undoLastItem }) => {
     return (
         <SafeAreaView>
             <View style={styles.body}>
@@ -51,6 +52,14 @@ const SessionButtonTop = ({ counterPress, multiClickCount, itemList, totalCount 
                     totalCount={totalCount}
                     itemList={itemList}
                 />
+                <Button
+                    mode="contained"
+                    onPress={undoLastItem}
+                >
+                    <Text style={styles.buttonText}>
+                        Undo last item
+                    </Text>
+                </Button>
 
             </View>
         </SafeAreaView >

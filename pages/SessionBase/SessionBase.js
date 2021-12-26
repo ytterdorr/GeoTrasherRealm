@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, SafeAreaView, StyleSheet, Alert } from "react-native";
-import { Button, Menu, Divider } from 'react-native-paper';
+import { Button, Menu, Divider, Drawer } from 'react-native-paper';
 import Colors from "../assets/Colors";
 import KeyEvent from 'react-native-keyevent';
 
-import realm, { addItemToSession, updateItemSumsAndTotalById } from "../realmSchemas";
+import realm, { addItemToSession, updateItemSumsAndTotalById, popLastItem } from "../realmSchemas";
 import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "../assets/utilities";
 import images from '../assets/images'
 import SessionLookVertical from './SessionLook'
@@ -57,7 +57,7 @@ class SessionBase extends React.Component {
         ]
 
         this.state = {
-            view: <Text>Loading...</Text>,
+            view: "SessionButtonTop",
             hasLocationPermission: null,
             multiClickTimer: null,
             timerRunning: false,
@@ -65,7 +65,8 @@ class SessionBase extends React.Component {
             multiClickCount: 0,
             keyCode: null,
             items: itemList,
-            sessionId: 0
+            sessionId: 0,
+            showSettings: false,
         }
     }
 
@@ -78,6 +79,8 @@ class SessionBase extends React.Component {
                     counterPress={this.counterPress}
                     totalCount={this.state.totalCount}
                     multiClickCount={this.state.multiClickCount}
+                    undoLastItem={this.undoLastItem}
+
                 />)
             case "SessionLeftScroll":
                 console.log("Get state SessionLeftScroll")
@@ -89,6 +92,7 @@ class SessionBase extends React.Component {
                     itemList={this.state.items}
                     counterPress={this.counterPress}
                     totalCount={this.state.totalCount}
+                    undoLastItem={this.undoLastItem}
                 />)
             case "SessionButtonTop":
                 console.log("Get view SessionButtonTop")
@@ -97,15 +101,17 @@ class SessionBase extends React.Component {
                     itemList={this.state.items}
                     counterPress={this.counterPress}
                     totalCount={this.state.totalCount}
+                    undoLastItem={this.undoLastItem}
                 />
                 )
             default:
                 console.log("Default view");
-                return (<SessionLookVertical
+                return (<SessionButtonTop
+                    multiClickCount={this.state.multiClickCount}
                     itemList={this.state.items}
                     counterPress={this.counterPress}
                     totalCount={this.state.totalCount}
-                    multiClickCount={this.state.multiClickCount}
+                    undoLastItem={this.undoLastItem}
                 />)
         }
     }
@@ -137,11 +143,10 @@ class SessionBase extends React.Component {
             default:
                 console.log("Default view");
                 this.setState({
-                    view: "SessionLookVertical"
+                    view: "SessionButtonTop"
                 })
 
         }
-        this.setState({ viewName })
     }
 
     menuStuff = () => {
@@ -167,6 +172,7 @@ class SessionBase extends React.Component {
                     <Divider />
                     <Menu.Item onPress={() => { this.setView("SessionWithRotation") }} title="SessionWithRotation" />
                     <Menu.Item onPress={() => { this.setView("SessionButtonTop") }} title="SessionButtonTop" />
+                    <Menu.Item onPress={() => { this.undoLastItem() }} title="Undo item" />
                 </Menu>
             </View>
         );
@@ -326,6 +332,42 @@ class SessionBase extends React.Component {
         // // Might be good to turn into a promise, but I am not too sure how to do that
 
     }
+
+    undoLastItem = async () => {
+        if (this.state.totalCount <= 0) {
+            return
+        }
+
+        let lastItem;
+        try {
+            lastItem = await popLastItem(this.state.sessionId);
+            console.log('returned?', lastItem)
+        } catch (error) {
+            console.log("Fail popLastItem from session in realm")
+            console.log(error)
+        }
+
+        // Update item sums
+        let itemSums = {}
+        let tmpItems = [...this.state.items];
+        tmpItems.forEach(item => {
+            // Update state if match
+            if (item.name === lastItem.name) {
+                item.value -= 1
+                this.setState({ items: tmpItems, totalCount: this.state.totalCount - 1 })
+            }
+            // Update sums object
+            itemSums[item.name] = item.value
+        })
+
+        try {
+            await updateItemSumsAndTotalById(this.state.sessionId, itemSums, this.state.totalCount)
+        } catch (error) {
+            console.error("Fail update items sums in realm")
+            console.log(error)
+        }
+    }
+
 
 
 
