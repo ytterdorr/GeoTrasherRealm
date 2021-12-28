@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-mapbox-gl/maps": "^8.5.0",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
     "react": "17.0.2",
@@ -18,7 +19,6 @@
     "react-native-geolocation-service": "^5.3.0-beta.4",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-keyevent": "^0.2.8",
-    "react-native-maps": "^0.29.4",
     "react-native-paper": "^4.11.1",
     "react-native-reanimated": "^2.2.4",
     "react-native-safe-area-context": "^3.3.2",

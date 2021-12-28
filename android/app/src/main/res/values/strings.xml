@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GeoTrasherRealm</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoieXR0ZXJkb3JyIiwiYSI6ImNreGk0dm54dDA3NHgyd281eHh4bm5ueWoifQ.V43vZ77_zZcM9bnZFx8l0Q</string>
 </resources>

@@ -10,6 +10,7 @@ import SessionDataScreen from './pages/SessionDataScreen';
 import SessionLookVertical from './pages/SessionLookVertical';
 import SessionButtonTop from './pages/SessionButtonTop';
 import SessionBase from './pages/SessionBase';
+import MapsPage from './pages/MapsPage';
 
 const Stack = createStackNavigator();
 
@@ -54,6 +55,11 @@ function App() {
                         name="SessionBase"
                         component={SessionBase}
                         options={{ title: "Session" }} />
+
+                    <Stack.Screen
+                        name="MapsPage"
+                        component={MapsPage}
+                        options={{ title: "MapsPage" }} />
 
                 </Stack.Navigator>
             </NavigationContainer>
