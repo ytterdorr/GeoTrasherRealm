@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { DataTable, Button } from 'react-native-paper';
 
-
 const styles = StyleSheet.create({
     sessionButton: {
         paddingLeft: 10,
@@ -22,7 +21,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const SessionDataTable = ({ session }) => {
+const SessionDataTable = ({ session, goToDetails }) => {
     const sessionHasData = session.itemCount;
 
     const getFormattedDate = () => {
@@ -69,7 +68,7 @@ const SessionDataTable = ({ session }) => {
 
                 </DataTable>
                 <View style={{ justifyContent: 'center', padding: 5, marginBottom: 10 }}>
-                    <Button mode="contained" onPress={() => console.log("more details")}>More Details</Button>
+                    <Button mode="contained" onPress={() => { goToDetails() }}>More Details</Button>
                 </View>
 
             </View>
@@ -79,8 +78,16 @@ const SessionDataTable = ({ session }) => {
 
 }
 
-const SessionButton = ({ session, deleteSessionPrompt }) => {
+const SessionButton = ({ session, deleteSessionPrompt, navigation }) => {
     const [showDetails, setShowDetails] = useState(false);
+
+    const goToDetails = () => {
+        navigation.navigate({
+            name: 'MapsPage', params: {
+                sessionId: session.session_id
+            }
+        })
+    }
 
     const toggleShowDetails = () => {
         setShowDetails(!showDetails);
@@ -90,7 +97,7 @@ const SessionButton = ({ session, deleteSessionPrompt }) => {
             <TouchableOpacity
                 style={showDetails ? { ...styles.sessionButton, ...styles.selected } : styles.sessionButton}
                 onPress={toggleShowDetails}
-                onLongPress={() => { console.log("Long press") }}
+                onLongPress={() => { goToDetails() }}
             >
                 <Text style={{ fontSize: 20 }}>{session.session_name}</Text>
                 <Text style={{ fontSize: 20 }}>{`Items: ${session.itemCount}`}</Text>
@@ -102,7 +109,7 @@ const SessionButton = ({ session, deleteSessionPrompt }) => {
                 </Button>
             </TouchableOpacity>
             {showDetails ? (
-                <SessionDataTable session={session} />
+                <SessionDataTable session={session} goToDetails={goToDetails} />
             )
                 : null
             }
