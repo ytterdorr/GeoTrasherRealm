@@ -13,6 +13,7 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.github.kevinejohn.keyevent.KeyEventPackage; // keyevent
+import com.reactnativeultimateconfig.UltimateConfigModule; // rnuc
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -48,6 +49,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    UltimateConfigModule.setBuildConfig(BuildConfig.class); /* react-native-ultimate-config */
   }
 
   /**

@@ -61,3 +61,7 @@ buck-out/
 
 # Other
 .notes.txt
+.env
+
+# react-native-ultimate-config
+rnuc.xcconfig
