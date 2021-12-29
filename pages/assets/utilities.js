@@ -29,8 +29,6 @@ export const checkLocationPermission = async () => {
 
         const hasFineLocationPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
         const hasCoarseLocationPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION);
-        console.log("hasFineLocationPermission: ", hasFineLocationPermission);
-        console.log("hasCoarseLocationPermission", hasCoarseLocationPermission);
         const result = hasFineLocationPermission && hasCoarseLocationPermission;
         return result
     }
@@ -41,7 +39,6 @@ export const checkLocationPermission = async () => {
 }
 
 export const getCurrentPosition = async (hasLocationPermission, successFunction) => {
-    console.log("getCurrentPosition, has permission: ", hasLocationPermission)
     if (hasLocationPermission) {
         Geolocation.getCurrentPosition(
             // onSuccess: 

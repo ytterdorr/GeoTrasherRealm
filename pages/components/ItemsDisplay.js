@@ -40,16 +40,12 @@ const styles = StyleSheet.create({
 
 const TypeCounterRow = ({ item }) => {
     // item: { name: string, value: int, image: image source, ...}
-    console.log("in TypeCounterRow")
-    console.log("item.image", item.image)
-    console.log("images[item.name]", images[item.name])
     const itemImage = item.image
         ? item.image
         : images[item.name]
             ? images[item.name]
             : images.other
 
-    console.log("item.image", item.image)
     return (
         <View style={styles.typeCounterRow}>
             <View style={{ height: '100%', aspectRatio: 1 }}>
@@ -72,8 +68,6 @@ const ItemsDisplay = ({ itemList, totalCount, sortFunc = sortByValueDescending }
     // itemList: [ 
     //        item: { name: string, value: int, image: image source, ...}]
     // totalCount: int
-    console.log("in ItemDisplay")
-    console.log("itemList", itemList)
 
     return (
         <View style={styles.container}>
