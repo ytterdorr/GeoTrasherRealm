@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, Alert } from "react-native";
-import { Button, Menu, Divider, Drawer } from 'react-native-paper';
+import { View, SafeAreaView, StyleSheet } from "react-native";
+import { Button, Menu } from 'react-native-paper';
 import Colors from "../assets/Colors";
 import KeyEvent from 'react-native-keyevent';
 
-import realm, { addItemToSession, updateItemSumsAndTotalById, popLastItem } from "../realmSchemas";
+import realm, { addItemToSession, updateItemSumsAndTotalById, popLastItem, setSessionNameById } from "../realmSchemas";
 import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "../assets/utilities";
 import images from '../assets/images'
 import SessionLookVertical from './SessionLook'
@@ -12,10 +12,32 @@ import SessionLeftScroll from './SessionLeftScroll';
 import SessionWithRotation from './SessionWithRotation'
 import SessionButtonTop from "./SessionButtonTop";
 import SettingsModal from "./SettingsModal";
+import StartModal from './StartModal';
 
 // SessionBase should handle logic, but nothing of how it looks. All Looks should be imported. 
 
-// get user settings
+// TODO: get user settings
+
+const MenuStuff = ({ undoLastItem, showSettings }) => {
+    const [visible, setVisible] = useState(false)
+
+    return (
+        <View>
+            <Menu
+                visible={visible}
+                onDismiss={() => setVisible(false)}
+                anchor={<Button onPress={setVisible}>Show menu</Button>}>
+                <Menu.Item icon='cog' onPress={() => {
+                    showSettings()
+                    setVisible(false)
+                }
+                } title="Settings" />
+                <Menu.Item icon='undo' onPress={() => { undoLastItem() }} title="Undo item" />
+            </Menu>
+        </View >
+    );
+}
+
 
 const availableViews = {
     SessionLookVertical: "SessionLookVertical",
@@ -77,7 +99,27 @@ class SessionBase extends React.Component {
             items: itemList,
             sessionId: 0,
             showSettings: false,
+            showStartModal: false,
+            countingPushes: false,
         }
+    }
+
+    menuStuff = () => {
+        return <MenuStuff
+            onDismiss={this.hideMenu}
+            showMenu={this.showMenu}
+            undoLastItem={this.undoLastItem}
+            showSettings={this.showSettings}
+        ></MenuStuff>
+
+    }
+
+    showMenu = () => {
+        this.setState({ showMenu: true })
+    }
+
+    hideMenu = () => {
+        this.setState({ showMenu: false })
     }
 
     showSettings = () => {
@@ -86,6 +128,19 @@ class SessionBase extends React.Component {
 
     hideSettings = () => {
         this.setState({ showSettings: false })
+    }
+
+    hideStartModal = () => {
+        this.setState({ showStartModal: false })
+    }
+
+    startSession = () => {
+        this.hideStartModal()
+        this.setState({ countingPushes: true })
+    }
+
+    setSessionName = (sessionName) => {
+        setSessionNameById(this.state.sessionId, sessionName);
     }
 
     setClickerTime = (timeInMs) => {
@@ -153,41 +208,6 @@ class SessionBase extends React.Component {
         // this.setState({ view: availableViews.default })
     }
 
-    menuStuff = () => {
-
-        const [visible, setVisible] = useState(false)
-
-        const openMenu = () => {
-            setVisible(true)
-        }
-
-        const closeMenu = () => {
-            setVisible(false)
-        }
-
-        return (
-            <View>
-                <Menu
-                    visible={visible}
-                    onDismiss={closeMenu}
-                    anchor={<Button onPress={openMenu}>Show menu</Button>}>
-                    {/* <Menu.Item onPress={() => { this.setView('SessionLookVertical') }} title="SessionLookVertical" />
-                    <Menu.Item onPress={() => { this.setView('SessionLeftScroll') }} title="SessionLeftScroll" />
-                    <Divider />
-                    <Menu.Item onPress={() => { this.setView("SessionWithRotation") }} title="SessionWithRotation" />
-                    <Menu.Item onPress={() => { this.setView("SessionButtonTop") }} title="SessionButtonTop" />
-                */}
-                    <Menu.Item icon='cog' onPress={() => {
-                        this.showSettings()
-                        closeMenu()
-                    }
-                    } title="Settings" />
-                    <Menu.Item icon='undo' onPress={() => { this.undoLastItem() }} title="Undo item" />
-                </Menu>
-            </View>
-        );
-    }
-
     componentDidMount() {
 
         this.setView("")
@@ -234,12 +254,7 @@ class SessionBase extends React.Component {
         });
 
         // Show the user that session is created
-        Alert.alert('Success', `New session with id: ${this.state.sessionId}`, [
-            {
-                text: 'Ok',
-            }
-        ],
-            { cancelable: true });
+        this.setState({ showStartModal: true })
     }
 
     initializeLocationPermission = async () => {
@@ -461,6 +476,12 @@ class SessionBase extends React.Component {
                 {
                     this.getView()
                 }
+                {this.state.showStartModal ? <StartModal
+                    visible={this.state.showStartModal}
+                    onDismiss={this.startSession}
+                    sessionId={this.state.sessionId}
+                    setSessionName={this.setSessionName}
+                /> : null}
                 <SettingsModal
                     visible={this.state.showSettings}
                     onDismiss={() => this.hideSettings()}

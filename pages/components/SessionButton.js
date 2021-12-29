@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { DataTable, Button } from 'react-native-paper';
-
+import { getFormattedDateFromTimestamp } from '../assets/utilities';
+import ItemsDisplay from './ItemsDisplay';
 
 const styles = StyleSheet.create({
     sessionButton: {
@@ -22,11 +23,10 @@ const styles = StyleSheet.create({
     }
 })
 
-const SessionDataTable = ({ session }) => {
+const SessionDataTable = ({ session, goToDetails }) => {
     const sessionHasData = session.itemCount;
 
-    const getFormattedDate = () => {
-        const timestamp = session.items[0].location.timestamp
+    const getFormattedDate = (timestamp) => {
         let date = new Date(timestamp)
         const offset = date.getTimezoneOffset()
         date = new Date(date.getTime() - (offset * 60 * 1000))
@@ -44,7 +44,7 @@ const SessionDataTable = ({ session }) => {
 
                     <DataTable.Header>
                         <DataTable.Title>
-                            <Text style={{ fontSize: 22 }}>{getFormattedDate()}</Text>
+                            <Text style={{ fontSize: 22 }}>{getFormattedDateFromTimestamp(session.items[0].location.timestamp)}</Text>
                         </DataTable.Title>
                     </DataTable.Header>
 
@@ -69,7 +69,7 @@ const SessionDataTable = ({ session }) => {
 
                 </DataTable>
                 <View style={{ justifyContent: 'center', padding: 5, marginBottom: 10 }}>
-                    <Button mode="contained" onPress={() => console.log("more details")}>More Details</Button>
+                    <Button mode="contained" onPress={() => { goToDetails() }}>More Details</Button>
                 </View>
 
             </View>
@@ -79,8 +79,16 @@ const SessionDataTable = ({ session }) => {
 
 }
 
-const SessionButton = ({ session, deleteSessionPrompt }) => {
+const SessionButton = ({ session, deleteSessionPrompt, navigation }) => {
     const [showDetails, setShowDetails] = useState(false);
+
+    const goToDetails = () => {
+        navigation.navigate({
+            name: 'MapsPage', params: {
+                sessionId: session.session_id
+            }
+        })
+    }
 
     const toggleShowDetails = () => {
         setShowDetails(!showDetails);
@@ -90,7 +98,7 @@ const SessionButton = ({ session, deleteSessionPrompt }) => {
             <TouchableOpacity
                 style={showDetails ? { ...styles.sessionButton, ...styles.selected } : styles.sessionButton}
                 onPress={toggleShowDetails}
-                onLongPress={() => { console.log("Long press") }}
+                onLongPress={() => { goToDetails() }}
             >
                 <Text style={{ fontSize: 20 }}>{session.session_name}</Text>
                 <Text style={{ fontSize: 20 }}>{`Items: ${session.itemCount}`}</Text>
@@ -101,12 +109,25 @@ const SessionButton = ({ session, deleteSessionPrompt }) => {
                     onPress={() => deleteSessionPrompt(session)}>
                 </Button>
             </TouchableOpacity>
-            {showDetails ? (
-                <SessionDataTable session={session} />
-            )
+            {showDetails ?
+                <View style={{ maxHeight: 250, alignItems: 'center' }}>
+                    <Text style={{ fontSize: 22 }}>{getFormattedDateFromTimestamp(session.items[0].location.timestamp)}</Text>
+                    <Button
+                        mode="contained"
+                        onPress={() => goToDetails()}
+                        style={{ width: '90%', margin: 5 }}
+                    >Show map</Button>
+                    <View style={{ height: '75%' }}>
+                        <ItemsDisplay
+                            itemList={Object.entries(session.itemSum).map(
+                                ([name, value]) => { return { name, value } })}
+                            totalCount={session.itemCount}
+                        />
+                    </View>
+                </View>
                 : null
             }
-        </View>
+        </View >
     )
 }
 

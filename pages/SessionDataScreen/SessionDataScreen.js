@@ -6,7 +6,7 @@ import TotalsDisplay from '../components/TotalsDisplay';
 
 const totalsHeight = Dimensions.get("screen").height * 0.3
 
-const SessionDataScreen = () => {
+const SessionDataScreen = ({ navigation }) => {
 
     const [sessions, setSessions] = useState(getAllSessions());
     console.log("Sessions in sessionDataScreen")
@@ -36,7 +36,12 @@ const SessionDataScreen = () => {
             <TotalsDisplay sessions={sessions} style={{ height: totalsHeight }}></TotalsDisplay>
             {sessions && sessions.length > 0 ? sessions.map((session, index) => {
                 console.log(session);
-                return <SessionButton key={`${session.session_name}_${index}`} session={session} deleteSessionPrompt={deleteSessionPrompt} />
+                return <SessionButton
+                    key={`${session.session_name}_${index}`}
+                    session={session}
+                    deleteSessionPrompt={deleteSessionPrompt}
+                    navigation={navigation}
+                />
             })
                 : <Text>No session data</Text>
             }

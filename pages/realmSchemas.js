@@ -44,7 +44,7 @@ const deleteSessionById = (_id) => {
 }
 
 const getSessionById = (_id) => {
-    return realm.objects('session_details').filtered(`session_id = ${_id}`);
+    return realm.objects('session_details').filtered(`session_id = ${_id}`)[0];
 }
 
 const addItemToSession = async (sessionId, item) => {
@@ -59,19 +59,26 @@ const addItemToSession = async (sessionId, item) => {
 const popLastItem = async (sessionId) => {
     console.log("todo: popLastItem")
     let session = await getSessionById(sessionId)[0]
-    let lastItemName={} 
+    let lastItemName = {}
     realm.write(() => {
         let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
         if (ses.items && ses.items.length > 0) {
-        const lastItem=ses.items[ses.items.length -1]
-        lastItemName = {name: lastItem.name}
-        realm.delete(lastItem)
-        
-        //ses.itemSum[lastItem.name].value-=1;
-        //ses.itemCount-=1
+            const lastItem = ses.items[ses.items.length - 1]
+            lastItemName = { name: lastItem.name }
+            realm.delete(lastItem)
+
+            //ses.itemSum[lastItem.name].value-=1;
+            //ses.itemCount-=1
         }
     })
     return lastItemName
+}
+
+const setSessionNameById = (_id, name) => {
+    realm.write(() => {
+        let session = getSessionById(_id);
+        session.session_name = name
+    })
 }
 
 const updateSessionById = (_id, sessionData) => {
@@ -98,8 +105,10 @@ const updateItemSumsAndTotalById = async (sessionId, itemSums, totalCount) => {
 
 export {
     dbPath,
+    getSessionById,
     getAllSessions,
     deleteSessionById,
+    setSessionNameById,
     addItemToSession,
     updateItemSumsById,
     updateItemSumsAndTotalById,

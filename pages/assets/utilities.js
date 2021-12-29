@@ -53,3 +53,11 @@ export const getCurrentPosition = async (hasLocationPermission, successFunction)
         );
     }
 }
+
+export const getFormattedDateFromTimestamp = (timestamp) => {
+    let date = new Date(timestamp)
+    const offset = date.getTimezoneOffset()
+    date = new Date(date.getTime() - (offset * 60 * 1000))
+    const times = date.toISOString().split('T')
+    return `${times[0]} ${times[1].split(".")[0]}`
+}

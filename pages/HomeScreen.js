@@ -37,13 +37,6 @@ const HomeScreen = ({ navigation }) => {
                 <TotalsDisplay sessions={sessions}></TotalsDisplay>
             </View>
             <View style={{ flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 40 }}>
-                <Button style={buttonStyle}
-                    mode="contained"
-                    onPress={() => navigation.navigate('SessionButtonTop')}
-                >
-                    Session with Button image
-
-                </Button>
                 <Button
                     mode="contained"
                     style={buttonStyle}
