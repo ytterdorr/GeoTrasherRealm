@@ -6,7 +6,7 @@ import KeyEvent from 'react-native-keyevent';
 
 import realm, {
     addItemToSession, updateItemSumsAndTotalById, popLastItem,
-    setSessionNameById, getLatestSession, setActiveSession
+    setSessionNameById, getLatestSession, setActiveSession, getSessionById
 } from "../realmSchemas";
 import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "../assets/utilities";
 import images from '../assets/images'
@@ -21,7 +21,7 @@ import StartModal from './StartModal';
 
 // TODO: get user settings
 
-const MenuStuff = ({ undoLastItem, showSettings, endSession }) => {
+const MenuStuff = ({ undoLastItem, showSettings, endSession, printSession }) => {
     const [visible, setVisible] = useState(false)
 
     return (
@@ -37,6 +37,7 @@ const MenuStuff = ({ undoLastItem, showSettings, endSession }) => {
                 }
                 } title="Settings" />
                 <Menu.Item icon='undo' onPress={() => { undoLastItem() }} title="Undo item" />
+                <Menu.Item icon='stop' onPress={() => { printSession() }} title="Print Session" />
             </Menu>
         </View >
     );
@@ -136,8 +137,14 @@ class SessionBase extends React.Component {
             undoLastItem={this.undoLastItem}
             showSettings={this.showSettings}
             endSession={this.endSession}
+            printSession={this.printSession}
         ></MenuStuff>
 
+    }
+
+    printSession = () => {
+        const session = getSessionById(this.state.sessionId)
+        console.log("Print Session: ", session)
     }
 
     showMenu = () => {
@@ -254,7 +261,6 @@ class SessionBase extends React.Component {
             console.log("KeyDownTimerRunning?", this.state.timerRunning)
             this.counterPress()
         });
-        console.log("route.params.activeSession", this.props.route.params.activeSession)
         if (this.props.route.params.activeSession) {
             // get latest session
             this.useExistingSession();
@@ -268,7 +274,6 @@ class SessionBase extends React.Component {
     useExistingSession = () => {
         // Transform itemSum to itemList
         const session = getLatestSession()
-        console.log("existing session", session)
         const itemList = mapItemSumToItemList(session.itemSum)
         this.setState({ sessionId: session.session_id, items: itemList, totalCount: session.itemCount })
     }
@@ -309,7 +314,6 @@ class SessionBase extends React.Component {
                 }
             }
             this.setState({ hasLocationPermission: locationPermission })
-            console.log("state.hasLocationPermission", this.state.hasLocationPermission)
         } catch (err) {
             console.warn(`Failed to get location permission, ${err}`)
         }
@@ -337,7 +341,7 @@ class SessionBase extends React.Component {
                 const permission = await requestLocationPermission()
                 if (!permission) {
                     // Don't continue without permission'¨
-                    console.log("Does not have location permission")
+                    console.warn("Does not have location permission")
                     return
                 }
             } catch (err) {
@@ -350,7 +354,6 @@ class SessionBase extends React.Component {
         const storeItemWithPosition = async (position) => {
             try {
 
-                console.log(position)
                 const location = {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
@@ -374,7 +377,6 @@ class SessionBase extends React.Component {
                         itemSums[item.name] = item.value
                     })
 
-                    console.log(`About to update counts and total. Total: ${this.state.totalCount}`)
                     await updateItemSumsAndTotalById(this.state.sessionId, itemSums, this.state.totalCount)
                 } catch (error) {
                     console.error("Fail update items sums in realm")
@@ -406,9 +408,8 @@ class SessionBase extends React.Component {
         let lastItem;
         try {
             lastItem = await popLastItem(this.state.sessionId);
-            console.log('returned?', lastItem)
         } catch (error) {
-            console.log("Fail popLastItem from session in realm")
+            console.error("Fail popLastItem from session in realm")
             console.log(error)
         }
 
@@ -452,7 +453,6 @@ class SessionBase extends React.Component {
         tmpItems[index].value += 1
         this.setState({ items: tmpItems })
         this.setState({ totalCount: this.state.totalCount + 1 })
-        console.log(`updated counts: ${this.state.items}, total: ${this.state.totalCount}`)
     }
 
     incrementItemCountByName = (itemName) => {
@@ -465,7 +465,7 @@ class SessionBase extends React.Component {
                 return
             }
         })
-        console.log("Error in incrementItemCountByName")
+        console.error("Error in incrementItemCountByName")
         console.log(`Name: '${itemName}' did not match any item in item list`)
 
     }
@@ -490,7 +490,6 @@ class SessionBase extends React.Component {
 
 
     counterPress = () => {
-        // console.log("timerRunning?", this.state.timerRunning);
         if (this.state.timerRunning) {
             clearTimeout(this.state.multiClickTimer);
             this.setState({ multiClickTimer: null })
@@ -501,11 +500,9 @@ class SessionBase extends React.Component {
             multiClickTimer: setTimeout(this.onTimeOut, this.state.clickerTime),
             timerRunning: true
         })
-        console.log("Pressed Button")
     }
 
     checkLocationIsRight = () => {
-        console.log("state has permission?", this.state.hasLocationPermission)
         checkLocationPermission();
     }
 

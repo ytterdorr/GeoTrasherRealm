@@ -78,7 +78,6 @@ const getSessionById = (_id) => {
 
 const getUserSettings = () => {
     let settings = realm.objects('user_settings');
-    console.log("userSettings", settings)
     if (settings.length) {
         return settings[0]
     }
@@ -90,7 +89,6 @@ const getUserSettings = () => {
 
 const getLatestSession = () => {
     const sessions = realm.objects('session_details')
-    console.log("Sessions length", sessions.length)
     if (sessions.length) {
         return realm.objects('session_details')[sessions.length - 1]
 
@@ -134,11 +132,9 @@ const setSessionNameById = (_id, name) => {
 }
 
 const addItemToSession = async (sessionId, item) => {
-    console.log("addItemToSession")
     let session = await getSessionById(sessionId)
     realm.write(() => {
         let ses = getSessionById(sessionId);
-        console.log(ses)
         ses.items.push(item)
     })
 }
@@ -152,9 +148,9 @@ const updateItemSumsById = async (sessionId, itemSums) => {
 
 const updateItemSumsAndTotalById = async (sessionId, itemSums, totalCount) => {
     realm.write(() => {
-        let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`);
+        let ses = getSessionById(sessionId);
         ses.itemSum = itemSums;
-        ses.itemCount = totalCount
+        ses.itemCount = totalCount;
     });
 }
 
@@ -168,16 +164,13 @@ const deleteSessionById = (_id) => {
 
 const deleteAllSessions = () => {
     const sessions = realm.objects('session_details');
-    console.log("sessions", sessions)
     sessions.forEach(session => {
-        console.log("session", session)
         deleteSessionById(session.session_id)
     })
 }
 
 
 const popLastItem = async (sessionId) => {
-    console.log("todo: popLastItem")
     let session = await getSessionById(sessionId)
     let lastItemName = {}
     realm.write(() => {
