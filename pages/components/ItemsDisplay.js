@@ -64,7 +64,7 @@ const TypeCounterRow = ({ item }) => {
 }
 
 
-const sortByValueDescending = (itemList) => itemList.sort((a, b) => b.value - a.value)
+const sortByValueDescending = (itemList) => [...itemList].sort((a, b) => b.value - a.value)
 
 const ItemsDisplay = ({ itemList, totalCount, sortFunc = sortByValueDescending }) => {
 

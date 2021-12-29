@@ -4,6 +4,7 @@ import { Button } from 'react-native-paper';
 import Colors from "../../assets/Colors";
 import ItemsCounter from "./ItemsCounter";
 import ItemCarousel from './ItemCarousel';
+import ItemsDisplay from "../../components/ItemsDisplay";
 
 // Byt ut itemCounts på följande ställen:
 
@@ -33,6 +34,9 @@ const styles = StyleSheet.create({
 
 });
 
+const noSort = (list) => {
+    return list
+}
 
 const SessionButtonTop = ({ counterPress, multiClickCount, itemList, totalCount, undoLastItem }) => {
     return (
@@ -47,11 +51,17 @@ const SessionButtonTop = ({ counterPress, multiClickCount, itemList, totalCount,
                         multiClickCount={multiClickCount}
                     ></ItemCarousel>
                 </TouchableOpacity>
-
-                <ItemsCounter
-                    totalCount={totalCount}
-                    itemList={itemList}
-                />
+                <View style={{ height: '50%' }}>
+                    <ItemsDisplay
+                        totalCount={totalCount}
+                        itemList={itemList}
+                        sortFunc={noSort}
+                    />
+                    {/* <ItemsCounter
+                        totalCount={totalCount}
+                        itemList={itemList}
+                    /> */}
+                </View>
                 <Button
                     mode="contained"
                     onPress={undoLastItem}
