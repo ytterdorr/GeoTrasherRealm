@@ -74,6 +74,13 @@ const popLastItem = async (sessionId) => {
     return lastItemName
 }
 
+const setSessionNameById = (_id, name) => {
+    realm.write(() => {
+        let session = getSessionById(_id);
+        session.session_name = name
+    })
+}
+
 const updateSessionById = (_id, sessionData) => {
     realm.write(() => {
         let session = getSessionById(_id);
@@ -101,6 +108,7 @@ export {
     getSessionById,
     getAllSessions,
     deleteSessionById,
+    setSessionNameById,
     addItemToSession,
     updateItemSumsById,
     updateItemSumsAndTotalById,
