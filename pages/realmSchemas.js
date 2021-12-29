@@ -135,23 +135,24 @@ const setSessionNameById = (_id, name) => {
 
 const addItemToSession = async (sessionId, item) => {
     console.log("addItemToSession")
-    let session = await getSessionById(sessionId)[0]
+    let session = await getSessionById(sessionId)
     realm.write(() => {
-        let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
+        let ses = getSessionById(sessionId);
+        console.log(ses)
         ses.items.push(item)
     })
 }
 
 const updateItemSumsById = async (sessionId, itemSums) => {
     realm.write(() => {
-        let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
+        let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`);
         ses.itemSum = itemSums;
     });
 }
 
 const updateItemSumsAndTotalById = async (sessionId, itemSums, totalCount) => {
     realm.write(() => {
-        let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
+        let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`);
         ses.itemSum = itemSums;
         ses.itemCount = totalCount
     });
@@ -177,7 +178,7 @@ const deleteAllSessions = () => {
 
 const popLastItem = async (sessionId) => {
     console.log("todo: popLastItem")
-    let session = await getSessionById(sessionId)[0]
+    let session = await getSessionById(sessionId)
     let lastItemName = {}
     realm.write(() => {
         let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];

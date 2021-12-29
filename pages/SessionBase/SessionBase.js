@@ -261,9 +261,8 @@ class SessionBase extends React.Component {
         }
         else {
 
-            // this.createSessionInRealm();
+            this.createSessionInRealm();
         }
-        // }
     }
 
     useExistingSession = () => {
