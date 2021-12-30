@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
-import Colors from "../assets/Colors";
-import ItemsCounter from "./ItemsCounter";
-import ItemCarousel from './ItemCarousel';
+import Colors from "../../assets/Colors";
+import ItemsCounter from "../components/ItemsCounter";
+import ItemCarousel from '../components/ItemCarousel';
+
 // Byt ut itemCounts på följande ställen:
 
 const styles = StyleSheet.create({

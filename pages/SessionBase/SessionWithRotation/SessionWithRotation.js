@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Alert } from "react-native";
-import ItemsCounter from "./ItemsCounter";
-import ItemCarousel from './ItemCarousel';
+import ItemsCounter from "../components/ItemsCounter";
+import ItemCarousel from '../components/ItemCarousel';
 
 const SessionWithRotation = ({ itemList, multiClickCount, itemCounts, counterPress }) => {
     return (
