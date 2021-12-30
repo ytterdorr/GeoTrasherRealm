@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from 'react-native';
 
 import { Button } from 'react-native-paper';
-import { getAllSessions } from './realmSchemas';
+import { getActiveSession, getAllSessions, getLatestSession, deleteAllSessions } from './realmSchemas';
 import TotalsDisplay from "./components/TotalsDisplay";
 
 // TODO:
@@ -20,9 +20,14 @@ const buttonStyle = {
 }
 
 const HomeScreen = ({ navigation }) => {
+    // const [activeSession, setActiveSession] = useState({ active: false, id: 0 })
+    // deleteAllSessions();
 
-    // Todo: add loading?
+    // // Todo: add loading?
     const sessions = getAllSessions();
+    const activeSession = getActiveSession();
+    const latestSession = getLatestSession();
+    console.log('latestSession', latestSession)
 
     return (
         <View
@@ -33,17 +38,28 @@ const HomeScreen = ({ navigation }) => {
                 justifyContent: 'space-between',
             }}>
             <View style={{ height: '50%' }}>
-
                 <TotalsDisplay sessions={sessions}></TotalsDisplay>
             </View>
             <View style={{ flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 40 }}>
                 <Button
                     mode="contained"
                     style={buttonStyle}
-                    onPress={() => navigation.navigate('SessionBase')}
+                    onPress={() => navigation.navigate('SessionBase', {
+                        activeSession: false
+                    })}
                 >
-                    Session Base
+                    {"New Session"}
                 </Button>
+                {activeSession ? <Button
+                    mode="contained"
+                    style={buttonStyle}
+                    onPress={() => navigation.navigate('SessionBase', {
+                        activeSession: true
+                    })}
+                >
+                    {"Continue Session"}
+                </Button>
+                    : null}
                 <Button style={buttonStyle}
                     mode="contained"
                     onPress={() => navigation.navigate('SessionDataScreen')}

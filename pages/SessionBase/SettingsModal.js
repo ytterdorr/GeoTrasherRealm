@@ -31,7 +31,6 @@ const SettingsModal = ({
 
     const [multiClickTime, setMultiClickTime] = React.useState(clickerTime.current)
     const [radioChoice, setRadioChoice] = React.useState(views.selected)
-    console.log("visible:", visible)
 
     const onRadioChange = async (choice) => {
         await setRadioChoice(choice)
@@ -47,7 +46,6 @@ const SettingsModal = ({
     }
 
     const save = () => {
-        console.log("Setting view?", radioChoice)
         views.set(radioChoice)
         if (multiClickTime === "") {
             clickerTime.set(10)

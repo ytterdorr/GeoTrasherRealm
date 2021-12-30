@@ -28,7 +28,6 @@ const SettingsModal = ({
     setSessionName,
 }) => {
     const [tmpName, setTmpName] = useState(`Session ${sessionId}`)
-    console.log("visible:", visible)
 
 
     const onTextChange = (name) => {

@@ -20,8 +20,6 @@ const styles = StyleSheet.create({
 
 
 const ItemCarousel = ({ itemList, multiClickCount }) => {
-    console.log("itemList", itemList)
-    console.log("multiClickCount", multiClickCount)
 
     return (
         <View style={

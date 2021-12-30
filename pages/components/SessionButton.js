@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { DataTable, Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { getFormattedDateFromTimestamp } from '../assets/utilities';
 import ItemsDisplay from './ItemsDisplay';
+import { writeSessionItemsToCsv } from '../assets/utilities';
 
 const styles = StyleSheet.create({
     sessionButton: {
@@ -23,71 +24,18 @@ const styles = StyleSheet.create({
     }
 })
 
-const SessionDataTable = ({ session, goToDetails }) => {
-    const sessionHasData = session.itemCount;
-
-    const getFormattedDate = (timestamp) => {
-        let date = new Date(timestamp)
-        const offset = date.getTimezoneOffset()
-        date = new Date(date.getTime() - (offset * 60 * 1000))
-        const times = date.toISOString().split('T')
-        return `${times[0]} ${times[1].split(".")[0]}`
-    }
-
-
-    return (<View>
-        {sessionHasData
-            ?
-            <View>
-
-                <DataTable style={{ paddingLeft: 20, paddingRight: 20 }}>
-
-                    <DataTable.Header>
-                        <DataTable.Title>
-                            <Text style={{ fontSize: 22 }}>{getFormattedDateFromTimestamp(session.items[0].location.timestamp)}</Text>
-                        </DataTable.Title>
-                    </DataTable.Header>
-
-                    {Object.entries(session.itemSum).sort(function (a, b) {
-                        return b[1] - a[1]
-                    }).map(([itemName, value]) => {
-                        return (
-                            <DataTable.Row key={`${session.session_name}_${itemName}`}>
-                                <DataTable.Cell >
-                                    <Text style={styles.tableCellText}>
-                                        {itemName}
-                                    </Text>
-                                </DataTable.Cell>
-                                <DataTable.Cell numeric>
-                                    <Text style={styles.tableCellText}>
-                                        {value}
-                                    </Text>
-                                </DataTable.Cell>
-                            </DataTable.Row>
-                        )
-                    })}
-
-                </DataTable>
-                <View style={{ justifyContent: 'center', padding: 5, marginBottom: 10 }}>
-                    <Button mode="contained" onPress={() => { goToDetails() }}>More Details</Button>
-                </View>
-
-            </View>
-            : <Text>No data</Text>
-        }
-    </View>)
-
-}
-
 const SessionButton = ({ session, deleteSessionPrompt, navigation }) => {
     const [showDetails, setShowDetails] = useState(false);
 
     const goToDetails = () => {
-        navigation.navigate({
-            name: 'MapsPage', params: {
-                sessionId: session.session_id
-            }
-        })
+        // only go to map page if there is items. Otherwise do nothing?
+        if (session.items.length) {
+            navigation.navigate({
+                name: 'MapsPage', params: {
+                    sessionId: session.session_id
+                }
+            })
+        }
     }
 
     const toggleShowDetails = () => {
@@ -110,21 +58,26 @@ const SessionButton = ({ session, deleteSessionPrompt, navigation }) => {
                 </Button>
             </TouchableOpacity>
             {showDetails ?
-                <View style={{ maxHeight: 250, alignItems: 'center' }}>
-                    <Text style={{ fontSize: 22 }}>{getFormattedDateFromTimestamp(session.items[0].location.timestamp)}</Text>
-                    <Button
-                        mode="contained"
-                        onPress={() => goToDetails()}
-                        style={{ width: '90%', margin: 5 }}
-                    >Show map</Button>
-                    <View style={{ height: '75%' }}>
-                        <ItemsDisplay
-                            itemList={Object.entries(session.itemSum).map(
-                                ([name, value]) => { return { name, value } })}
-                            totalCount={session.itemCount}
-                        />
+                session.items.length ?
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={{ fontSize: 22 }}>{getFormattedDateFromTimestamp(session.items[0].location.timestamp)}</Text>
+                        <Button mode="contained" style={{ width: '90%', margin: 5 }}
+                            onPress={() => writeSessionItemsToCsv(session.items, session.session_name.replace(" ", "_"))}
+                        >Export csv</Button>
+                        <Button
+                            mode="contained"
+                            onPress={() => goToDetails()}
+                            style={{ width: '90%', margin: 5 }}
+                        >Show map</Button>
+                        <View style={{ maxHeight: 200, }}>
+                            <ItemsDisplay
+                                itemList={Object.entries(session.itemSum).map(
+                                    ([name, value]) => { return { name, value } })}
+                                totalCount={session.itemCount}
+                            />
+                        </View>
                     </View>
-                </View>
+                    : <View style={{ alignItems: 'center', padding: 10 }}><Text>No data</Text></View>
                 : null
             }
         </View >

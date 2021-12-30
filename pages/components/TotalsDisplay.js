@@ -29,7 +29,6 @@ const Totals = ({ sessions, style }) => {
 
         return { name: name, value: value, image: images[name] ? images[name] : images.other, color: 'red' }
     })
-    console.log("itemsWithImages", itemsWithImages)
 
     return (
         <View style={{ ...style }}>

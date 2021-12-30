@@ -2,12 +2,32 @@ import Realm from 'realm';
 
 const dbPath = 'GeoTrasherData.realm';
 
-itemSchema = {
+const itemSchema = {
     name: 'item_details',
     properties: {
         name: 'string',
         location: '{}?'
     }
+}
+
+const itemTypeSchema = {
+    name: 'item_type',
+    properties: {
+        name: 'string',
+        iconName: 'string?'
+    }
+}
+
+const userSettingsSchema = {
+    name: 'user_settings',
+    properties: {
+        userName: 'string?',
+        activeSession: { type: 'bool', default: false },
+        items: { type: 'list', objectType: 'item_type' }, // Item list used by user
+        sessionView: 'string?',  // name of session preferred by user
+        multiClickTimer: 'int', // How long the timer wats for next click
+    }
+
 }
 
 sessionSchema = {
@@ -21,44 +41,137 @@ sessionSchema = {
     }
 }
 
+
+/// Realm object
 let realm = new Realm({
     path: 'GeoTrasherData.realm',
-    schema: [sessionSchema, itemSchema],
-    schemaVersion: 4
+    schema: [sessionSchema, itemSchema, itemTypeSchema, userSettingsSchema],
+    schemaVersion: 7
 });
 
+const defaultItems = [
+    { name: 'nicotine', iconName: 'nicotine' },
+    { name: 'plastic', iconName: 'plastic' },
+    { name: 'paper', iconName: 'paper' },
+    { name: 'food', iconName: 'food' },
+    { name: 'metal', iconName: 'metal' },
+    { name: 'glass', iconName: 'glass' },
+    { name: 'other', iconName: 'other' },
+]
+
+const defaultUserSettings = {
+    userName: 'Anonymous User',
+    activeSession: false,
+    items: defaultItems,
+    sessionView: 'SessionButtonTop',
+    multiClickTimer: 600,
+}
+
+// Getters
 const getAllSessions = () => {
     return realm.objects('session_details');
-}
-
-const deleteAllSessions = () => {
-    realm.write(() => {
-        realm.delete(getAllSessions());
-    })
-}
-
-const deleteSessionById = (_id) => {
-    realm.write(() => {
-        realm.delete(getSessionById(_id))
-    })
 }
 
 const getSessionById = (_id) => {
     return realm.objects('session_details').filtered(`session_id = ${_id}`)[0];
 }
 
-const addItemToSession = async (sessionId, item) => {
-    console.log("addItemToSession")
-    let session = await getSessionById(sessionId)[0]
+const getUserSettings = () => {
+    let settings = realm.objects('user_settings');
+    if (settings.length) {
+        return settings[0]
+    }
+    else { // user settings never set, this is the first time app is used. 
+        setDefaultUserSettings()
+        return defaultUserSettings
+    }
+}
+
+const getLatestSession = () => {
+    const sessions = realm.objects('session_details')
+    if (sessions.length) {
+        return realm.objects('session_details')[sessions.length - 1]
+
+    }
+}
+
+// returns a boolean
+const getActiveSession = () => {
+    const settings = getUserSettings()
+    return settings.activeSession;
+}
+
+
+// Set / Update /add
+
+const setDefaultUserSettings = () => {
     realm.write(() => {
-        let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
+        let userSettings = realm.objects('user_settings')
+        if (userSettings.length) {
+            settings = realm.objects[0]
+        } else { // If no user settings set before
+            realm.create('user_settings', defaultUserSettings)
+        }
+    })
+}
+
+const setActiveSession = (active) => {
+    // active: bool
+
+    let settings = getUserSettings()
+    realm.write(() => {
+        settings.activeSession = active;
+    })
+}
+
+const setSessionNameById = (_id, name) => {
+    realm.write(() => {
+        let session = getSessionById(_id);
+        session.session_name = name
+    })
+}
+
+const addItemToSession = async (sessionId, item) => {
+    let session = await getSessionById(sessionId)
+    realm.write(() => {
+        let ses = getSessionById(sessionId);
         ses.items.push(item)
     })
 }
 
+const updateItemSumsById = async (sessionId, itemSums) => {
+    realm.write(() => {
+        let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`);
+        ses.itemSum = itemSums;
+    });
+}
+
+const updateItemSumsAndTotalById = async (sessionId, itemSums, totalCount) => {
+    realm.write(() => {
+        let ses = getSessionById(sessionId);
+        ses.itemSum = itemSums;
+        ses.itemCount = totalCount;
+    });
+}
+
+
+// Delete
+const deleteSessionById = (_id) => {
+    realm.write(() => {
+        realm.delete(getSessionById(_id))
+    })
+}
+
+const deleteAllSessions = () => {
+    const sessions = realm.objects('session_details');
+    sessions.forEach(session => {
+        deleteSessionById(session.session_id)
+    })
+}
+
+
 const popLastItem = async (sessionId) => {
-    console.log("todo: popLastItem")
-    let session = await getSessionById(sessionId)[0]
+    let session = await getSessionById(sessionId)
     let lastItemName = {}
     realm.write(() => {
         let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
@@ -74,45 +187,25 @@ const popLastItem = async (sessionId) => {
     return lastItemName
 }
 
-const setSessionNameById = (_id, name) => {
-    realm.write(() => {
-        let session = getSessionById(_id);
-        session.session_name = name
-    })
-}
 
-const updateSessionById = (_id, sessionData) => {
-    realm.write(() => {
-        let session = getSessionById(_id);
-    })
-}
-
-const updateItemSumsById = async (sessionId, itemSums) => {
-    realm.write(() => {
-        let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
-        ses.itemSum = itemSums;
-    });
-}
-
-const updateItemSumsAndTotalById = async (sessionId, itemSums, totalCount) => {
-    realm.write(() => {
-        let ses = realm.objects('session_details').filtered(`session_id = ${sessionId}`)[0];
-        ses.itemSum = itemSums;
-        ses.itemCount = totalCount
-    });
-}
 
 
 export {
     dbPath,
     getSessionById,
     getAllSessions,
-    deleteSessionById,
+    getUserSettings,
+    getActiveSession,
+    getLatestSession,
+
+    setActiveSession,
     setSessionNameById,
     addItemToSession,
     updateItemSumsById,
     updateItemSumsAndTotalById,
     popLastItem,
+    deleteSessionById,
+    deleteAllSessions,
 }
 
 export default realm;
