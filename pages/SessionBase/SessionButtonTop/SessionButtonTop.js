@@ -40,7 +40,6 @@ const noSort = (list) => {
 
 const SessionButtonTop = ({ counterPress, multiClickCount, itemList, totalCount, undoLastItem }) => {
     return (
-        <SafeAreaView>
             <View style={styles.body}>
                 <TouchableOpacity
                     style={{ paddingTop: '5%' }}
@@ -72,7 +71,6 @@ const SessionButtonTop = ({ counterPress, multiClickCount, itemList, totalCount,
                 </Button>
 
             </View>
-        </SafeAreaView >
     )
 }
 

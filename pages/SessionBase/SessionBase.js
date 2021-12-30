@@ -10,10 +10,15 @@ import realm, {
 } from "../realmSchemas";
 import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "../assets/utilities";
 import images from '../assets/images'
-import SessionLookVertical from './SessionLook'
+
+//Session user interfaces
+import SessionLookVertical from './SessionLookVertical'
 import SessionLeftScroll from './SessionLeftScroll';
 import SessionWithRotation from './SessionWithRotation'
 import SessionButtonTop from "./SessionButtonTop";
+import SessionScroll from "./SessionScroll";
+
+//Modals
 import SettingsModal from "./SettingsModal";
 import StartModal from './StartModal';
 
@@ -49,35 +54,9 @@ const availableViews = {
     SessionLeftScroll: "SessionLeftScroll",
     SessionWithRotation: "SessionWithRotation",
     SessionButtonTop: "SessionButtonTop",
+    SessionScroll: "SessionScroll",
 }
 availableViews.default = availableViews.SessionButtonTop
-
-
-const styles = StyleSheet.create({
-    body: {
-        backgroundColor: "white",
-        height: "100%",
-        width: "100%",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    welcomeText: {
-        color: Colors.primary
-    },
-    button: {
-        backgroundColor: Colors.green,
-        color: "white",
-        borderRadius: 5,
-        padding: 10
-    },
-    buttonText: {
-        fontSize: 15,
-        fontWeight: "bold",
-        color: "white"
-    }
-
-});
 
 const defaultItems = [
     { name: 'nicotine', color: 'red', value: 0, image: images.nicotine },
@@ -103,15 +82,7 @@ const mapItemSumToItemList = (itemSum) => {
 class SessionBase extends React.Component {
     constructor(props) {
         super(props);
-        const itemList = props.itemList || [
-            { name: 'nicotine', color: 'red', value: 0, image: images.nicotine },
-            { name: 'plastic', color: 'blue', value: 0, image: images.plastic },
-            { name: 'paper', color: 'orange', value: 0, image: images.paper },
-            { name: 'food', color: 'olive', value: 0, image: images.food },
-            { name: 'metal', color: 'beige', value: 0, image: images.metal },
-            { name: 'glass', color: 'aqua', value: 0, image: images.glass },
-            { name: 'other', color: 'purple', value: 0, image: images.other },
-        ]
+        const itemList = props.itemList || defaultItems;
 
         this.state = {
             view: "SessionButtonTop",
@@ -215,8 +186,14 @@ class SessionBase extends React.Component {
                     counterPress={this.counterPress}
                     totalCount={this.state.totalCount}
                     undoLastItem={this.undoLastItem}
-                />
-                )
+                />)
+            case "SessionScroll":
+                return (<SessionScroll
+                    itemList={this.state.items}
+                    totalCount={this.state.totalCount}
+                    increment={this.incrementItemCountByName}
+                    undoLastItem={this.undoLastItem}
+                />)
             default:
                 console.log("Default view");
                 return (<SessionButtonTop
