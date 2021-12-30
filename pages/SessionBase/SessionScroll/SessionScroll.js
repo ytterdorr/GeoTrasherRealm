@@ -82,12 +82,11 @@ const SessionScroll = ({itemList, totalCount, increment, undoLastItem }) => {
             > 
                 {    
                     itemList.map((item, index) => {
-                        return <View>
+                        return <View key={`${item.name}${index}_touchableRow`} >
                         <TouchableOpacity 
                         style={{
                             backgroundColor: 'green', 
                             alignItems: 'center'}}
-                        key={`${item.name}${index}_touchableRow`} 
                         onPress={() => {increment(item.name)}}>
                         {TypeCounterRow ({item: item})}
                         </TouchableOpacity>
