@@ -19,8 +19,8 @@ import SessionButtonTop from "./SessionButtonTop";
 import SessionScroll from "./SessionScroll";
 
 //Modals
-import SettingsModal from "./SettingsModal";
-import StartModal from './StartModal';
+import SettingsModal from "./components/SettingsModal";
+import StartModal from './components/StartModal';
 
 // SessionBase should handle logic, but nothing of how it looks. All Looks should be imported. 
 
@@ -435,13 +435,13 @@ class SessionBase extends React.Component {
     incrementItemCountByName = (itemName) => {
         // Find index of item name by name
         let tmpItems = [...this.state.items];
-        tmpItems.forEach(item => {
+        for (let item of tmpItems) {
             if (item.name === itemName) {
                 item.value += 1
                 this.setState({ items: tmpItems, totalCount: this.state.totalCount + 1 })
                 return
             }
-        })
+        }
         console.error("Error in incrementItemCountByName")
         console.log(`Name: '${itemName}' did not match any item in item list`)
 
