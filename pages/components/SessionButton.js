@@ -23,62 +23,6 @@ const styles = StyleSheet.create({
     }
 })
 
-const SessionDataTable = ({ session, goToDetails }) => {
-    const sessionHasData = session.itemCount;
-
-    const getFormattedDate = (timestamp) => {
-        let date = new Date(timestamp)
-        const offset = date.getTimezoneOffset()
-        date = new Date(date.getTime() - (offset * 60 * 1000))
-        const times = date.toISOString().split('T')
-        return `${times[0]} ${times[1].split(".")[0]}`
-    }
-
-
-    return (<View>
-        {sessionHasData
-            ?
-            <View>
-
-                <DataTable style={{ paddingLeft: 20, paddingRight: 20 }}>
-
-                    <DataTable.Header>
-                        <DataTable.Title>
-                            <Text style={{ fontSize: 22 }}>{getFormattedDateFromTimestamp(session.items[0].location.timestamp)}</Text>
-                        </DataTable.Title>
-                    </DataTable.Header>
-
-                    {Object.entries(session.itemSum).sort(function (a, b) {
-                        return b[1] - a[1]
-                    }).map(([itemName, value]) => {
-                        return (
-                            <DataTable.Row key={`${session.session_name}_${itemName}`}>
-                                <DataTable.Cell >
-                                    <Text style={styles.tableCellText}>
-                                        {itemName}
-                                    </Text>
-                                </DataTable.Cell>
-                                <DataTable.Cell numeric>
-                                    <Text style={styles.tableCellText}>
-                                        {value}
-                                    </Text>
-                                </DataTable.Cell>
-                            </DataTable.Row>
-                        )
-                    })}
-
-                </DataTable>
-                <View style={{ justifyContent: 'center', padding: 5, marginBottom: 10 }}>
-                    <Button mode="contained" onPress={() => { goToDetails() }}>More Details</Button>
-                </View>
-
-            </View>
-            : <Text>No data</Text>
-        }
-    </View>)
-
-}
-
 const SessionButton = ({ session, deleteSessionPrompt, navigation }) => {
     const [showDetails, setShowDetails] = useState(false);
 
