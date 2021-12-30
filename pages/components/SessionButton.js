@@ -27,11 +27,14 @@ const SessionButton = ({ session, deleteSessionPrompt, navigation }) => {
     const [showDetails, setShowDetails] = useState(false);
 
     const goToDetails = () => {
-        navigation.navigate({
-            name: 'MapsPage', params: {
-                sessionId: session.session_id
-            }
-        })
+        // only go to map page if there is items. Otherwise do nothing?
+        if (session.items.length) {
+            navigation.navigate({
+                name: 'MapsPage', params: {
+                    sessionId: session.session_id
+                }
+            })
+        }
     }
 
     const toggleShowDetails = () => {
@@ -54,21 +57,23 @@ const SessionButton = ({ session, deleteSessionPrompt, navigation }) => {
                 </Button>
             </TouchableOpacity>
             {showDetails ?
-                <View style={{ maxHeight: 250, alignItems: 'center' }}>
-                    <Text style={{ fontSize: 22 }}>{getFormattedDateFromTimestamp(session.items[0].location.timestamp)}</Text>
-                    <Button
-                        mode="contained"
-                        onPress={() => goToDetails()}
-                        style={{ width: '90%', margin: 5 }}
-                    >Show map</Button>
-                    <View style={{ height: '75%' }}>
-                        <ItemsDisplay
-                            itemList={Object.entries(session.itemSum).map(
-                                ([name, value]) => { return { name, value } })}
-                            totalCount={session.itemCount}
-                        />
+                session.items.length ?
+                    <View style={{ maxHeight: 250, alignItems: 'center' }}>
+                        <Text style={{ fontSize: 22 }}>{getFormattedDateFromTimestamp(session.items[0].location.timestamp)}</Text>
+                        <Button
+                            mode="contained"
+                            onPress={() => goToDetails()}
+                            style={{ width: '90%', margin: 5 }}
+                        >Show map</Button>
+                        <View style={{ height: '75%' }}>
+                            <ItemsDisplay
+                                itemList={Object.entries(session.itemSum).map(
+                                    ([name, value]) => { return { name, value } })}
+                                totalCount={session.itemCount}
+                            />
+                        </View>
                     </View>
-                </View>
+                    : <View style={{ alignItems: 'center', padding: 10 }}><Text>No data</Text></View>
                 : null
             }
         </View >

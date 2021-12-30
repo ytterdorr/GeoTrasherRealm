@@ -84,7 +84,7 @@ const featureCollectionFromItemList = (itemList) => {
     return featureCollection
 }
 
-const MapsPage = ({ route, theme }) => {
+const MapsPage = ({ route }) => {
 
     const sessionId = route.params ? route.params.sessionId : ""
 
@@ -94,7 +94,6 @@ const MapsPage = ({ route, theme }) => {
     if (sessionId || sessionId === 0) {
         session = getSessionById(sessionId)
         itemList = session.items
-        console.log("session", session)
     } else {
         itemList = mockItems;
     }
@@ -120,46 +119,53 @@ const MapsPage = ({ route, theme }) => {
     }
 
 
-    return (<View style={styles.pageContainer}>
-        <View style={{ width: '100%', padding: 5, alignItems: 'center' }}>
+    return (
+        <View>
+            {
+                itemList.length ?
+                    <View style={styles.pageContainer}>
+                        <View style={{ width: '100%', padding: 5, alignItems: 'center' }}>
 
-            <Title>{session.session_name}</Title>
-            {itemList ?
-                < Text > {getFormattedDateFromTimestamp(itemList[0].location.timestamp)}</Text>
-                : null
+                            <Title>{session.session_name}</Title>
+                            {itemList.lengt ?
+                                < Text > {getFormattedDateFromTimestamp(itemList[0].location.timestamp)}</Text>
+                                : null
+                            }
+                        </View>
+                        <View style={styles.mapContainer}>
+                            <MapboxGL.MapView
+                                style={styles.map}
+                                conterCoordinate={centerCoords}
+                            >
+                                <MapboxGL.Camera
+                                    zoomLevel={11}
+                                    centerCoordinate={featureCollection.features[0].geometry.coordinates}
+                                />
+                                {itemList.length > 0
+                                    ? <MapboxGL.ShapeSource
+                                        id="pointSource"
+                                        shape={featureCollection}
+                                    >
+                                        {renderLayers(images)}
+                                    </MapboxGL.ShapeSource>
+                                    : null}
+                            </MapboxGL.MapView>
+                        </View>
+                        <View style={styles.dataContainer} >
+                            {session.itemSum
+                                ?
+                                <View style={{ minHeight: 200 }}>
+                                    <ItemsDisplay
+                                        itemList={Object.entries(session.itemSum).map(([name, value]) => { return { name, value } })}
+                                        totalCount={session.itemCount}
+                                    ></ItemsDisplay>
+                                </View>
+                                : <Title>Total: 0</Title>}
+                        </View>
+                    </View >
+                    : <Text>No data</Text>
             }
-        </View>
-        <View style={styles.mapContainer}>
-            <MapboxGL.MapView
-                style={styles.map}
-                conterCoordinate={centerCoords}
-            >
-                <MapboxGL.Camera
-                    zoomLevel={11}
-                    centerCoordinate={featureCollection.features[0].geometry.coordinates}
-                />
-                {itemList.length > 0
-                    ? <MapboxGL.ShapeSource
-                        id="pointSource"
-                        shape={featureCollection}
-                    >
-                        {renderLayers(images)}
-                    </MapboxGL.ShapeSource>
-                    : null}
-            </MapboxGL.MapView>
-        </View>
-        <View style={styles.dataContainer} >
-            {session.itemSum
-                ?
-                <View style={{ minHeight: 200 }}>
-                    <ItemsDisplay
-                        itemList={Object.entries(session.itemSum).map(([name, value]) => { return { name, value } })}
-                        totalCount={session.itemCount}
-                    ></ItemsDisplay>
-                </View>
-                : <Title>Total: 0</Title>}
-        </View>
-    </View >
+        </View >
 
     )
 }
