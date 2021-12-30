@@ -7,8 +7,6 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 import HomeScreen from './pages/HomeScreen';
 import SessionDataScreen from './pages/SessionDataScreen';
-import SessionLookVertical from './pages/SessionLookVertical';
-import SessionButtonTop from './pages/SessionButtonTop';
 import SessionBase from './pages/SessionBase';
 import MapsPage from './pages/MapsPage';
 
@@ -40,16 +38,6 @@ function App() {
                         component={SessionDataScreen}
                         options={{ title: 'Session Data' }}
                     />
-
-                    <Stack.Screen
-                        name="SessionLookVertical"
-                        component={SessionLookVertical}
-                        options={{ title: "Session Look" }} />
-
-                    <Stack.Screen
-                        name="SessionButtonTop"
-                        component={SessionButtonTop}
-                        options={{ title: "Button on top" }} />
 
                     <Stack.Screen
                         name="SessionBase"

@@ -9,13 +9,17 @@ import realm, {
     setSessionNameById, getLatestSession, setActiveSession, getSessionById
 } from "../realmSchemas";
 import { checkLocationPermission, requestLocationPermission, getCurrentPosition } from "../assets/utilities";
-import images from '../assets/images'
-import SessionLookVertical from './SessionLook'
+import images from '../assets/images';
+
+
+import SessionLookVertical from './SessionLookVertical';
 import SessionLeftScroll from './SessionLeftScroll';
 import SessionWithRotation from './SessionWithRotation'
 import SessionButtonTop from "./SessionButtonTop";
-import SettingsModal from "./SettingsModal";
-import StartModal from './StartModal';
+
+
+import SettingsModal from "./components/SettingsModal";
+import StartModal from './components/StartModal';
 
 // SessionBase should handle logic, but nothing of how it looks. All Looks should be imported. 
 

@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
 import { Button } from 'react-native-paper';
 import Colors from "../../assets/Colors";
-import ItemsCounter from "./ItemsCounter";
 import ItemCarousel from './ItemCarousel';
 import ItemsDisplay from "../../components/ItemsDisplay";
 
@@ -57,10 +56,6 @@ const SessionButtonTop = ({ counterPress, multiClickCount, itemList, totalCount,
                         itemList={itemList}
                         sortFunc={noSort}
                     />
-                    {/* <ItemsCounter
-                        totalCount={totalCount}
-                        itemList={itemList}
-                    /> */}
                 </View>
                 <Button
                     mode="contained"
