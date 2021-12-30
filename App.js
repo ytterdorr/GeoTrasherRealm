@@ -9,6 +9,7 @@ import HomeScreen from './pages/HomeScreen';
 import SessionDataScreen from './pages/SessionDataScreen';
 import SessionBase from './pages/SessionBase';
 import MapsPage from './pages/MapsPage';
+import RNFetchWeird from './pages/RNFetchWeird';
 
 const Stack = createStackNavigator();
 
@@ -48,6 +49,11 @@ function App() {
                         name="MapsPage"
                         component={MapsPage}
                         options={{ title: "MapsPage" }} />
+
+                    <Stack.Screen
+                        name="RNFetchWeird"
+                        component={RNFetchWeird}
+                        options={{ title: "RNFetchWeird" }} />
 
                 </Stack.Navigator>
             </NavigationContainer>

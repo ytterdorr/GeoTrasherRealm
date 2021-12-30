@@ -64,10 +64,14 @@ const HomeScreen = ({ navigation }) => {
                     mode="contained"
                     onPress={() => navigation.navigate('SessionDataScreen')}
                 >Session Data</Button>
-                <Button style={buttonStyle}
+                {/* <Button style={buttonStyle}
                     mode="contained"
                     onPress={() => navigation.navigate('MapsPage')}
-                >Maps page</Button>
+                >Maps page</Button> */}
+                <Button style={buttonStyle}
+                    mode="contained"
+                    onPress={() => navigation.navigate('RNFetchWeird')}
+                >FetchWeird</Button>
             </View>
 
         </View >
