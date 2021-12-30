@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { DataTable, Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { getFormattedDateFromTimestamp } from '../assets/utilities';
 import ItemsDisplay from './ItemsDisplay';
+import { writeSessionItemsToCsv } from '../assets/utilities';
 
 const styles = StyleSheet.create({
     sessionButton: {
@@ -58,14 +59,17 @@ const SessionButton = ({ session, deleteSessionPrompt, navigation }) => {
             </TouchableOpacity>
             {showDetails ?
                 session.items.length ?
-                    <View style={{ maxHeight: 250, alignItems: 'center' }}>
+                    <View style={{ alignItems: 'center' }}>
                         <Text style={{ fontSize: 22 }}>{getFormattedDateFromTimestamp(session.items[0].location.timestamp)}</Text>
+                        <Button mode="contained" style={{ width: '90%', margin: 5 }}
+                            onPress={() => writeSessionItemsToCsv(session.items, session.session_name.replace(" ", "_"))}
+                        >Export csv</Button>
                         <Button
                             mode="contained"
                             onPress={() => goToDetails()}
                             style={{ width: '90%', margin: 5 }}
                         >Show map</Button>
-                        <View style={{ height: '75%' }}>
+                        <View style={{ maxHeight: 200, }}>
                             <ItemsDisplay
                                 itemList={Object.entries(session.itemSum).map(
                                     ([name, value]) => { return { name, value } })}
