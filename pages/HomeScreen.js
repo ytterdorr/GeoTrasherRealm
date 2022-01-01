@@ -50,16 +50,6 @@ const HomeScreen = ({ navigation }) => {
                 >
                     {"New Session"}
                 </Button>
-                {activeSession ? <Button
-                    mode="contained"
-                    style={buttonStyle}
-                    onPress={() => navigation.navigate('SessionBase', {
-                        activeSession: true
-                    })}
-                >
-                    {"Continue Session"}
-                </Button>
-                    : null}
                 <Button style={buttonStyle}
                     mode="contained"
                     onPress={() => navigation.navigate('SessionDataScreen')}

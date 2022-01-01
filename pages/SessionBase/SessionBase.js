@@ -95,10 +95,19 @@ const defaultItems = [
 
 const mapItemSumToItemList = (itemSum) => {
 
-    const itemList = Object.entries(itemSum).map(([name, value]) => {
-        const image = images[name] ? images[name] : images.other;
-
-        return { name, value, image, color: 'red' }
+    console.log("mapItemSum")
+    console.log("itemSum", itemSum)
+    // Order should be got from user settings
+    const order = ['nicotine', 'plastic', 'paper', 'food', 'metal', 'glass', 'other']
+    const itemList = order.map((itemName) => {
+        console.log("checking item name", itemName)
+        let value = 0;
+        if (itemSum[itemName]) {
+            console.log("got item", itemName, itemSum[itemName])
+            value = itemSum[itemName]
+        }
+        const image = images[itemName] ? images[itemName] : images.other;
+        return { name: itemName, value, image, color: 'red' }
     })
 
     return itemList;
@@ -266,11 +275,12 @@ class SessionBase extends React.Component {
             this.counterPress()
         });
         if (this.props.route.params.activeSession) {
+            console.log("using existing session")
             // get latest session
             this.useExistingSession();
         }
         else {
-
+            console.log("creating new session")
             this.createSessionInRealm();
         }
     }

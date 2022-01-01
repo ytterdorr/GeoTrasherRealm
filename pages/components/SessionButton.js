@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { getFormattedDateFromTimestamp } from '../assets/utilities';
 import ItemsDisplay from './ItemsDisplay';
-import { writeSessionItemsToCsv } from '../assets/utilities';
+// import { writeSessionItemsToCsv } from '../assets/utilities';
 
 const styles = StyleSheet.create({
     sessionButton: {
@@ -61,9 +61,9 @@ const SessionButton = ({ session, deleteSessionPrompt, navigation }) => {
                 session.items.length ?
                     <View style={{ alignItems: 'center' }}>
                         <Text style={{ fontSize: 22 }}>{getFormattedDateFromTimestamp(session.items[0].location.timestamp)}</Text>
-                        <Button mode="contained" style={{ width: '90%', margin: 5 }}
+                        {/* <Button mode="contained" style={{ width: '90%', margin: 5 }}
                             onPress={() => writeSessionItemsToCsv(session.items, session.session_name.replace(" ", "_"))}
-                        >Export csv</Button>
+                        >Export csv</Button> */}
                         <Button
                             mode="contained"
                             onPress={() => goToDetails()}
