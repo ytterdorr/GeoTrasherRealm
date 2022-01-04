@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Title } from 'react-native-paper';
+import { Title, Button } from 'react-native-paper';
 import config from 'react-native-ultimate-config'
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import { getSessionById } from '../realmSchemas';
@@ -37,6 +37,12 @@ const styles = StyleSheet.create({
         height: '60%'
     }
 })
+
+const buttonStyle = {
+    marginBottom: 15,
+    padding: 10,
+    fontSize: 20,
+}
 
 const mockItems = [
     {
@@ -84,7 +90,7 @@ const featureCollectionFromItemList = (itemList) => {
     return featureCollection
 }
 
-const MapsPage = ({ route }) => {
+const MapsPage = ({ route, navigation }) => {
 
     const sessionId = route.params ? route.params.sessionId : ""
 
@@ -121,6 +127,10 @@ const MapsPage = ({ route }) => {
 
     return (
         <View>
+            <Button style={buttonStyle}
+                    mode="contained"
+                    onPress={() => navigation.navigate('HomeScreen')}
+                    >Home Screen</Button> 
             {
                 itemList.length ?
                     <View style={styles.pageContainer}>
@@ -163,8 +173,8 @@ const MapsPage = ({ route }) => {
                                 : <Title>Total: 0</Title>}
                         </View>
                     </View >
-                    : <Text>No data</Text>
-            }
+                    : <Text>No data</Text>    
+            }   
         </View >
 
     )
