@@ -62,8 +62,8 @@ const defaultItems = [
     { name: 'nicotine', color: 'red', value: 0, image: images.nicotine },
     { name: 'plastic', color: 'blue', value: 0, image: images.plastic },
     { name: 'paper', color: 'orange', value: 0, image: images.paper },
-    { name: 'food', color: 'olive', value: 0, image: images.food },
     { name: 'metal', color: 'beige', value: 0, image: images.metal },
+    { name: 'food', color: 'olive', value: 0, image: images.food },
     { name: 'glass', color: 'aqua', value: 0, image: images.glass },
     { name: 'other', color: 'purple', value: 0, image: images.other },
 ]
