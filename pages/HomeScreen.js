@@ -66,8 +66,8 @@ const HomeScreen = ({ navigation }) => {
                 >Session Data</Button>
                 <Button style={buttonStyle}
                     mode="contained"
-                    onPress={() => navigation.navigate('MapsPage')}
-                >Maps page</Button>
+                    onPress={() => navigation.navigate('TryFs')}
+                >Try FS</Button>
             </View>
 
         </View >

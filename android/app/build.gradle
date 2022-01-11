@@ -199,6 +199,8 @@ dependencies {
 
     implementation 'com.android.support:multidex:2.0.1' //enter the latest multidex version
 
+    implementation project(':react-native-fs') // react native fs
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
     }

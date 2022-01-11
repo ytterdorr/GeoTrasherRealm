@@ -16,6 +16,8 @@ target 'GeoTrasherRealm' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'GeoTrasherRealmTests' do
     inherit! :complete
     # Pods for testing

@@ -9,6 +9,7 @@ import HomeScreen from './pages/HomeScreen';
 import SessionDataScreen from './pages/SessionDataScreen';
 import SessionBase from './pages/SessionBase';
 import MapsPage from './pages/MapsPage';
+import TryFs from './pages/tryFs';
 
 const Stack = createStackNavigator();
 
@@ -48,6 +49,11 @@ function App() {
                         name="MapsPage"
                         component={MapsPage}
                         options={{ title: "MapsPage" }} />
+
+                    <Stack.Screen
+                        name="TryFs"
+                        component={TryFs}
+                        options={{ title: "TryFs" }} />
 
                 </Stack.Navigator>
             </NavigationContainer>
