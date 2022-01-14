@@ -1,13 +1,31 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, LogBox } from 'react-native';
 import { Title, Button } from 'react-native-paper';
 import config from 'react-native-ultimate-config'
-import MapboxGL from '@react-native-mapbox-gl/maps';
+import MapboxGL, { Logger } from '@react-native-mapbox-gl/maps';
 import { getSessionById } from '../realmSchemas';
 import { getFormattedDateFromTimestamp } from '../assets/utilities';
 
 import images from '../assets/images';
 import ItemsDisplay from '../components/ItemsDisplay';
+
+// Ignore inevitable warnings when moving map
+Logger.setLogCallback(log => {
+    const { message } = log;
+
+    // expected warnings - see https://github.com/mapbox/mapbox-gl-native/issues/15341#issuecomment-522889062
+    if (
+        message.match('Request failed due to a permanent error: Canceled') ||
+        message.match('Request failed due to a permanent error: Socket Closed')
+    ) {
+        return true;
+    }
+    return false;
+});
+
+// Ignore glyphrasterizationmode warning, as it automatically sets a default
+// and it only concerns asian characters or other glyphs
+LogBox.ignoreLogs(["MapRenderer:onSurfaceCreated GlyphsRasterizationMode"])
 
 // Look at this perhaps
 // https://github.com/react-native-mapbox-gl/maps/issues/266
@@ -31,7 +49,10 @@ const styles = StyleSheet.create({
 
     },
     map: {
-        flex: 1
+        flex: 1,
+        LocalIdeographFontFamily: "'Noto Sans', 'Noto Sans CJK SC', sans-serif",
+        localIdeographFontFamily: "'Noto Sans', 'Noto Sans CJK SC', sans-serif"
+
     },
     dataContainer: {
         height: '60%'
@@ -128,9 +149,9 @@ const MapsPage = ({ route, navigation }) => {
     return (
         <View>
             <Button style={buttonStyle}
-                    mode="contained"
-                    onPress={() => navigation.navigate('HomeScreen')}
-                    >Home Screen</Button> 
+                mode="contained"
+                onPress={() => navigation.navigate('HomeScreen')}
+            >Home Screen</Button>
             {
                 itemList.length ?
                     <View style={styles.pageContainer}>
@@ -146,6 +167,9 @@ const MapsPage = ({ route, navigation }) => {
                             <MapboxGL.MapView
                                 style={styles.map}
                                 conterCoordinate={centerCoords}
+                                localizeLabels={true}
+                                localIdeographFontFamily="'Noto Sans', 'Noto Sans CJK SC', sans-serif"
+                                LocalIdeographFontFamily="'Noto Sans', 'Noto Sans CJK SC', sans-serif"
                             >
                                 <MapboxGL.Camera
                                     zoomLevel={11}
@@ -173,8 +197,8 @@ const MapsPage = ({ route, navigation }) => {
                                 : <Title>Total: 0</Title>}
                         </View>
                     </View >
-                    : <Text>No data</Text>    
-            }   
+                    : <Text>No data</Text>
+            }
         </View >
 
     )
