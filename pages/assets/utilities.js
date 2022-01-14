@@ -86,7 +86,7 @@ export
     const writeToCsv = (headers, data, fileName = 'data.csv') => {
 
         // Construct string for printing
-        const headerString = `${headers.join(',')}}\n`
+        const headerString = `${headers.join(',')}\n`
         const rowString = data.map(d => `${d.join(",")}\n`).join('');
         const csvString = `${headerString}${rowString}`;
 
