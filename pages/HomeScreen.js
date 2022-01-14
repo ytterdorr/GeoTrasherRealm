@@ -27,7 +27,6 @@ const HomeScreen = ({ navigation }) => {
     const sessions = getAllSessions();
     const activeSession = getActiveSession();
     const latestSession = getLatestSession();
-    console.log('latestSession', latestSession)
 
     return (
         <View
@@ -64,10 +63,6 @@ const HomeScreen = ({ navigation }) => {
                     mode="contained"
                     onPress={() => navigation.navigate('SessionDataScreen')}
                 >Session Data</Button>
-                <Button style={buttonStyle}
-                    mode="contained"
-                    onPress={() => navigation.navigate('TryFs')}
-                >Try FS</Button>
             </View>
 
         </View >
