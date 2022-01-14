@@ -129,9 +129,7 @@ const MapsPage = ({ route, navigation }) => {
 
     // Renders layers based on image import, not the most stable of methods ^^' 
     const renderLayers = (images) => {
-        console.log("images", images)
         return Object.entries(images).map(([imageName, imagePath]) => {
-            console.log("imageName", imageName, "imagePath", imagePath)
             return < MapboxGL.SymbolLayer
                 id={`${imageName}Layer`}
                 key={`${imageName}LayerKey`}

@@ -23,7 +23,6 @@ const getItemTotals = (sessions) => {
 
 const Totals = ({ sessions, style }) => {
     let [itemSums, total] = getItemTotals(sessions)
-    console.log(itemSums)
 
     const itemsWithImages = Object.entries(itemSums).sort((a, b) => b[1] - a[1]).map(([name, value]) => {
 

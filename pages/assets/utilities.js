@@ -92,7 +92,6 @@ export
 
         // Download directory works for Android, don't know about iOS
         const RNPath = RNFS.DownloadDirectoryPath
-        console.log("RNPath", RNPath)
 
         // write the current list of answers to a local csv file
         let pathToWrite = `${RNPath}/${fileName}`

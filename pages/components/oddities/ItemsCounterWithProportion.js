@@ -39,24 +39,23 @@ const styles = StyleSheet.create({
 
 
 const TypeCounterRow = ({ item, proportionalImages }) => {
-    console.log("item.image", item.image)
     return (
         <View style={styles.typeCounterRow}>
-            <View style={{ height: '100%', justifyContent: 'center', paddingHorizontal: '4%'}}
+            <View style={{ height: '100%', justifyContent: 'center', paddingHorizontal: '4%' }}
             >
                 <Image
-                    style={ proportionalImages ? {
-                        minHeight: '75%', 
-                        aspectRatio: 1, 
-                        height: 20*Math.cbrt(item.value), 
-                        width: 20*Math.sqrt(item.value)
+                    style={proportionalImages ? {
+                        minHeight: '75%',
+                        aspectRatio: 1,
+                        height: 20 * Math.cbrt(item.value),
+                        width: 20 * Math.sqrt(item.value)
                     } : styles.icon}
                     source={item.image} />
             </View>
-            
+
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{`${item.name}`}</Text>
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{`${item.value}`}</Text>
-            
+
         </View>
     )
 }

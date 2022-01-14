@@ -228,14 +228,14 @@ class SessionBase extends React.Component {
         this.initializeLocationPermission();
 
         KeyEvent.onKeyUpListener((keyEvent) => {
-            console.log(`onKeyUp keyCode: ${keyEvent.keyCode}`)
+            // console.log(`onKeyUp keyCode: ${keyEvent.keyCode}`)
         })
 
         KeyEvent.onKeyDownListener((keyEvent) => {
-            console.log(`onKeyDown keyCode: ${keyEvent.keyCode}`);
-            console.log(`Action: ${keyEvent.action}`);
-            console.log(`Key: ${keyEvent.pressedKey}`);
-            console.log("KeyDownTimerRunning?", this.state.timerRunning)
+            // console.log(`onKeyDown keyCode: ${keyEvent.keyCode}`);
+            // console.log(`Action: ${keyEvent.action}`);
+            // console.log(`Key: ${keyEvent.pressedKey}`);
+            // console.log("KeyDownTimerRunning?", this.state.timerRunning)
             this.counterPress()
         });
         if (this.props.route.params.activeSession) {

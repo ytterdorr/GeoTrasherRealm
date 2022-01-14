@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
 
 
 const TypeCounterRow = ({ item }) => {
-    console.log("item.image", item.image)
     return (
         <View style={styles.typeCounterRow}>
             <View style={{ height: '100%', aspectRatio: 1 }}>
