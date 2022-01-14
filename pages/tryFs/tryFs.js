@@ -6,13 +6,16 @@ import RNFS from 'react-native-fs';
 // create a path you want to write to
 // :warning: on iOS, you cannot write into `RNFS.MainBundlePath`,
 // but `RNFS.DocumentDirectoryPath` exists on both platforms and is writable
-var path = RNFS.DocumentDirectoryPath + '/test.txt';
+var path = RNFS.DownloadDirectoryPath + '/writing.csv';
 
 
 // write the file
 const tryWriteFile = () => {
     console.log("Writing to path", path)
-    RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
+    const content =
+        `header1,header2
+    cont1,cont2`;
+    RNFS.writeFile(path, content, 'utf8')
         .then((success) => {
             console.log('FILE WRITTEN!');
         })

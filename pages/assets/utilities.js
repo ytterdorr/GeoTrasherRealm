@@ -1,7 +1,8 @@
 import { PermissionsAndroid, alert } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFS from 'react-native-fs';
 import { Alert } from 'react-native';
+
 
 
 export const requestLocationPermission = async () => {
@@ -84,27 +85,25 @@ export const writeSessionItemsToCsv = (items, fileName = 'data.csv') => {
 export
     const writeToCsv = (headers, data, fileName = 'data.csv') => {
 
-        // const headerString = 'event,timestamp\n';
+        // Construct string for printing
         const headerString = `${headers.join(',')}}\n`
         const rowString = data.map(d => `${d.join(",")}\n`).join('');
         const csvString = `${headerString}${rowString}`;
 
-        const RNPath = RNFetchBlob.fs.dirs.DownloadDir
+        // Download directory works for Android, don't know about iOS
+        const RNPath = RNFS.DownloadDirectoryPath
         console.log("RNPath", RNPath)
 
         // write the current list of answers to a local csv file
-        let pathToWrite = `${RNFetchBlob.fs.dirs.DownloadDir}/${fileName}`
+        let pathToWrite = `${RNPath}/${fileName}`
         // Add ending if not csv
         if (pathToWrite.slice(pathToWrite.length - 4) !== '.csv') {
             pathToWrite += '.csv';
         }
         console.log('pathToWrite', pathToWrite);
-        // pathToWrite /storage/emulated/0/Download/data.csv
-        RNFetchBlob.fs
-            .writeFile(pathToWrite, csvString, 'utf8')
+        RNFS.writeFile(pathToWrite, csvString, 'utf8')
             .then(() => {
                 console.log(`wrote file ${pathToWrite}`);
-                // wrote file /storage/emulated/0/Download/data.csv
                 Alert.alert(
                     "CSV Export Successful",
                     `File saved in ${pathToWrite}`),
